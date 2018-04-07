@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using Sample.Helpers;
+using pshy.Helpers;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation.Metadata;
 using Windows.Storage;
@@ -9,17 +9,34 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 
-namespace Sample.Services
+namespace pshy.Services
 {
     public static class ThemeSelectorService
     {
-        private const string SettingsKey = "RequestedTheme";
+        private const string SettingsKey = "AppBackgroundRequestedTheme";
 
         public static ElementTheme Theme { get; set; } = ElementTheme.Default;
 
         public static async Task InitializeAsync()
         {
             Theme = await LoadThemeFromSettingsAsync();
+        }
+
+        public static async Task SetThemeAsync(ElementTheme theme)
+        {
+            Theme = theme;
+
+            SetRequestedTheme();
+            await SaveThemeInSettingsAsync(Theme);
+        }
+
+        public static void SetRequestedTheme()
+        {
+            if (Window.Current.Content is FrameworkElement frameworkElement)
+            {
+                frameworkElement.RequestedTheme = Theme;
+                SetupTitlebar();
+            }
         }
 
         public static ElementTheme TrueTheme()
@@ -56,23 +73,6 @@ namespace Sample.Services
 
                     coreTitleBar.ExtendViewIntoTitleBar = true;
                 }
-            }
-        }
-
-        public static async Task SetThemeAsync(ElementTheme theme)
-        {
-            Theme = theme;
-
-            SetRequestedTheme();
-            await SaveThemeInSettingsAsync(Theme);
-        }
-
-        public static void SetRequestedTheme()
-        {
-            if (Window.Current.Content is FrameworkElement frameworkElement)
-            {
-                frameworkElement.RequestedTheme = Theme;
-                SetupTitlebar();
             }
         }
 
