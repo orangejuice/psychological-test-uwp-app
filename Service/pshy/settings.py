@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'psychol.urls'
+ROOT_URLCONF = 'pshy.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'psychol.wsgi.application'
+WSGI_APPLICATION = 'pshy.wsgi.application'
 
 
 # Database

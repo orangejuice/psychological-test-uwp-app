@@ -12,4 +12,4 @@ def rec(request):
     username = request.POST['username']
     password = request.POST['password']
     print(username, password)
-    return render(request, "index.html")
+    return HttpResponse("hello," + username)

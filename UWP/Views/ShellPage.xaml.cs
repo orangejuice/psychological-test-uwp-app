@@ -25,7 +25,7 @@ namespace pshy.Views
         {
             InitializeComponent();
 
-            NavigationService.Frame = shellFrame;
+            NavigationService.Frame = ShellFrame;
             NavigationService.Navigated += Frame_Navigated;
             PopulateNavItems();
         }

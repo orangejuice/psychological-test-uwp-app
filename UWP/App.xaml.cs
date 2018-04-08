@@ -1,8 +1,11 @@
 ﻿using System;
 
 using pshy.Services;
-
+using pshy.Views;
 using Windows.ApplicationModel.Activation;
+using Windows.Networking.Connectivity;
+using Windows.System.Profile;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 
 namespace pshy
@@ -46,5 +49,59 @@ namespace pshy
         {
             return new Views.ShellPage();
         }
+        #region Static App Helpers
+
+
+        /// <summary>
+        /// Stops the back event from being called, allowing for manual overiding
+        /// </summary>
+        public static bool OverrideBackEvent { get; set; }
+
+        /// <summary>
+        ///     Is the app currently in the background.
+        /// </summary>
+        public static bool IsBackground { get; set; }
+
+        /// <summary>
+        ///     Is the app running on xbox
+        /// </summary>
+        public static bool IsXbox => AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Xbox";
+
+        /// <summary>
+        ///     Is the app runnning on a phone
+        /// </summary>
+        public static bool IsMobile => AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile";
+
+        /// <summary>
+        ///     Is the app running on desktop
+        /// </summary>
+        public static bool IsDesktop => AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop";
+
+        /// <summary>
+        ///     Is the application fullscreen.
+        /// </summary>
+        public static bool IsFullScreen => ApplicationView.GetForCurrentView().IsFullScreenMode;
+
+        /// <summary>
+        ///     Does the application currently have access to the internet.
+        /// </summary>
+        public static bool HasInternet
+        {
+            get
+            {
+                try
+                {
+                    var connectionProfile = NetworkInformation.GetInternetConnectionProfile();
+                    return connectionProfile != null &&
+                           connectionProfile.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
+
+        #endregion
     }
 }

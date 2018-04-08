@@ -10,7 +10,7 @@
     <NavigationView Name="ShellNavigation" AlwaysShowHeader="False"
                     ItemInvoked="ShellNavigation_ItemInvoked" OpenPaneLength="150">
         <Grid>
-            <Frame Name="shellFrame" />
+            <Frame Name="ShellFrame" />
         </Grid>
         <!--<controls:DropShadowPanel BlurRadius="15.0"
             ShadowOpacity="0.70"
