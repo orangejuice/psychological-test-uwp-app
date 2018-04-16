@@ -7,14 +7,17 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
 
-    <NavigationView Name="ShellNavigation" AlwaysShowHeader="False"
+    <Grid>
+        <NavigationView Name="ShellNavigation" AlwaysShowHeader="False"
                     ItemInvoked="ShellNavigation_ItemInvoked" OpenPaneLength="150">
-        <Grid>
-            <Frame Name="ShellFrame" />
-        </Grid>
-        <!--<controls:DropShadowPanel BlurRadius="15.0"
+            <Grid>
+                <Frame Name="ShellFrame" />
+            </Grid>
+            <!--<controls:DropShadowPanel BlurRadius="15.0"
             ShadowOpacity="0.70"
             Color="LightGray">
         </controls:DropShadowPanel>-->
-    </NavigationView>
+        </NavigationView>
+    </Grid>
+
 </Page>
