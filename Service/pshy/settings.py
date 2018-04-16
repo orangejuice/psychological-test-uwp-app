@@ -39,7 +39,13 @@ INSTALLED_APPS = [
     'eval.apps.EvalConfig',
     'posts.apps.PostsConfig',
     'rest_framework',
+    'threadedcomments',
+    'django_comments',
+    'django.contrib.sites',
+
 ]
+
+COMMENTS_APP = 'threadedcomments'
 
 REST_FRAMEWORK = {
     'PAGE_SIZE': 10,

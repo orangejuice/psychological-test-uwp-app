@@ -4,15 +4,30 @@ from posts.models import Article, Category, Comment
 from posts.tool import GeoNotFoundException, get_ip_area
 
 
+class CommentChildSerializer(serializers.ModelSerializer):
+    author_name = serializers.ReadOnlyField(source='author.username')
+
+    class Meta:
+        model = Comment
+        fields = ('url', 'content', 'author_name', 'author',
+                  'parent', 'created')
+
+
 class CommentSerializer(serializers.ModelSerializer):
+    replies = serializers.SerializerMethodField()
     replies_count = serializers.SerializerMethodField()
     author_name = serializers.ReadOnlyField(source='author.username')
 
     class Meta:
         model = Comment
         fields = ('url', 'content', 'author_name', 'author', 'article',
-                  'replies_count', 'created')
+                  'replies', 'replies_count', 'created')
         read_only_fields = ['reply_count', 'replies']
+
+    def get_replies(self, obj):
+        if obj.is_parent:
+            return CommentChildSerializer(obj.children(), many=True).data
+        return None
 
     def get_replies_count(self, obj):
         if obj.is_parent:
