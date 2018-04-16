@@ -7,9 +7,9 @@ from users.views import UserViewSet, GroupViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
-router.register(r'groups', GroupViewSet)
+router.register(r'users-group', GroupViewSet)
 router.register(r'posts', PostViewSet)
-router.register(r'categories', CategoryViewSet)
+router.register(r'posts-cate', CategoryViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

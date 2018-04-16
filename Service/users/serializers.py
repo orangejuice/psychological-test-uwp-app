@@ -5,11 +5,11 @@ from users.models import UserProfile
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    group = serializers.ReadOnlyField(source='groups.name')
+    groups = serializers.SlugRelatedField(many=True, read_only=True, slug_field="name")
 
     class Meta:
         model = UserProfile
-        fields = ('url', 'username', 'email', 'group', 'groups', 'avatar')
+        fields = ('url', 'username', 'email', 'groups', 'avatar')
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):

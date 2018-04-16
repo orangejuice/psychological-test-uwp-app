@@ -1,5 +1,6 @@
-from django.contrib.auth.models import User
 from django.db import models
+
+from users.models import UserProfile
 
 
 class Category(models.Model):
@@ -17,7 +18,7 @@ class Category(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=100, blank=False, default='')
     cate = models.ForeignKey(Category, related_name='cate_name', on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     content = models.TextField(max_length=5000, blank=False)
     thumbnail = models.ImageField(null=True, blank=True, default=None, upload_to='static/images/thumb')
     is_top = models.BooleanField('top status', default=False)
