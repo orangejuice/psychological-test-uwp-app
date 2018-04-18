@@ -1,6 +1,7 @@
+from django_comments.models import Comment
 from rest_framework import viewsets
 
-from posts.models import Article, Category, Comment
+from posts.models import Article, Category
 from posts.serializers import PostSerializer, CategorySerializer, CommentSerializer
 
 

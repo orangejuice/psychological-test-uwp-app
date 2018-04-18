@@ -1,23 +1,16 @@
+from django_comments.models import Comment
 from rest_framework import serializers
 
-from posts.models import Article, Category, Comment
+from posts.models import Article, Category
 from posts.tool import GeoNotFoundException, get_ip_area
 
 
-class CommentSerializer(serializers.ModelSerializer):
-    replies_count = serializers.SerializerMethodField()
-    author_name = serializers.ReadOnlyField(source='author.username')
+class CommentSerializer(serializers.HyperlinkedModelSerializer):
+    user_name = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = Comment
-        fields = ('url', 'content', 'author_name', 'author', 'article',
-                  'replies_count', 'created')
-        read_only_fields = ['reply_count', 'replies']
-
-    def get_replies_count(self, obj):
-        if obj.is_parent:
-            return obj.children().count()
-        return 0
+        fields = ('url', 'comment', 'user_name', 'user', 'submit_date')
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
@@ -35,7 +28,8 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'title', 'cate', 'cate_name', 'thumbnail', 'author', 'author_name',
                   'content', 'created', 'location', 'updated', 'comments', 'comments_count')
 
-    def get_comments_count(self, obj):
+    @staticmethod
+    def get_comments_count(obj):
         return obj.comments.all().count()
 
 

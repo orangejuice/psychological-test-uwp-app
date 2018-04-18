@@ -8,7 +8,7 @@ class Category(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-updated']
+        ordering = ['updated']
 
     def __str__(self):
         return str(self.name)
@@ -21,7 +21,7 @@ class Article(models.Model):
     content = models.TextField(max_length=5000, blank=False)
     thumbnail = models.ImageField(null=True, blank=True, default=None, upload_to='static/images/thumb')
     location = models.GenericIPAddressField(null=True)
-    is_top = models.BooleanField('top status', default=False)
+    is_top = models.BooleanField('是否置顶', default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -31,26 +31,8 @@ class Article(models.Model):
     def __str__(self):
         return str(self.title)
 
-
-class Comment(models.Model):
-    content = models.TextField(max_length=500, null=False, blank=False)
-    parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE, related_name='children')
-    article = models.ForeignKey(Article, related_name='comments', on_delete=models.CASCADE)
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    location = models.GenericIPAddressField(null=True)
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['created']
-
-    def __str__(self):
-        return str(self.content)
-
-    def children(self):
-        return Comment.objects.filter(parent=self)
-
-    @property
-    def is_parent(self):
-        if self.parent is not None:
-            return False
-        return True
+# class Comments(Comment):
+#     article = models.ForeignKey(Article, default=None, related_name='comments', on_delete=models.CASCADE)
+#
+#     class Meta:
+#         ordering = ('-submit_date',)
