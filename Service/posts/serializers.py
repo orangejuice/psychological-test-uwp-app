@@ -1,39 +1,64 @@
-from django_comments.models import Comment
+from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
+from django_comments_xtd.api.serializers import ReadCommentSerializer
+from django_comments_xtd.models import XtdComment
 from rest_framework import serializers
 
 from posts.models import Article, Category
-from posts.tool import GeoNotFoundException, get_ip_area
+from posts.utils import GeoNotFoundException, get_ip_area
+from users.serializers import UserSerializer
 
 
-class CommentSerializer(serializers.HyperlinkedModelSerializer):
-    user_name = serializers.ReadOnlyField(source='user.username')
+class CommentSerializer(ReadCommentSerializer):
+    user = UserSerializer(read_only=True)
 
-    class Meta:
-        model = Comment
-        fields = ('url', 'comment', 'user_name', 'user', 'submit_date')
+    class Meta(ReadCommentSerializer.Meta):
+        fields = ('id', 'user', 'user_moderator',
+                  'permalink', 'comment', 'submit_date',
+                  'parent_id', 'level', 'is_removed', 'allow_reply', 'flags')
 
 
-class PostSerializer(serializers.HyperlinkedModelSerializer):
+class PostListSerializer(serializers.HyperlinkedModelSerializer):
     author_name = serializers.ReadOnlyField(source='author.username')
     cate_name = serializers.ReadOnlyField(source='cate.name')
-    comments = CommentSerializer(many=True, read_only=True)
-    comments_count = serializers.SerializerMethodField()
-    try:
-        location = get_ip_area(serializers.ReadOnlyField(label='location'))
-    except GeoNotFoundException:
-        location = '未知位置'
 
     class Meta:
         model = Article
         fields = ('url', 'title', 'cate', 'cate_name', 'thumbnail', 'author', 'author_name',
-                  'content', 'created', 'location', 'updated', 'comments', 'comments_count')
+                  'content', 'created', 'updated')
+
+
+class PostDetailSerializer(serializers.HyperlinkedModelSerializer):
+    author_name = serializers.ReadOnlyField(source='author.username')
+    cate_name = serializers.ReadOnlyField(source='cate.name')
+    comments = serializers.SerializerMethodField()
+    location = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Article
+        fields = ('url', 'title', 'cate', 'cate_name', 'thumbnail', 'author', 'author_name',
+                  'content', 'created', 'updated', 'comments', 'location')
 
     @staticmethod
-    def get_comments_count(obj):
-        return obj.comments.all().count()
+    def get_location(obj):
+        try:
+            location = get_ip_area(obj.ip_address)
+        except GeoNotFoundException:
+            return '火星'
+        else:
+            return location['country'] + location['region']
+
+    def get_comments(self, obj):
+        content_type = ContentType.objects.get_for_model(obj.__class__)
+        qs = XtdComment.objects.filter(content_type=content_type,
+                                       object_pk=obj.pk,
+                                       site__pk=settings.SITE_ID,
+                                       is_public=True)
+        comments = CommentSerializer(qs, many=True, context=self.context).data
+        return comments
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Category
-        fields = ('url', 'name', 'updated')
+        fields = ('url', 'name', 'created')

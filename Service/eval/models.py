@@ -19,3 +19,6 @@ class ScaleOption(models.Model):
     scale = models.ForeignKey(Scale, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, blank=False)
     score = models.IntegerField()
+
+    class Meta:
+        db_table = 'eval_scale_option'
