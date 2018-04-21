@@ -4,9 +4,9 @@ from django_comments_xtd.api.serializers import ReadCommentSerializer
 from django_comments_xtd.models import XtdComment
 from rest_framework import serializers
 
-from posts.models import Article, Category
-from posts.utils import GeoNotFoundException, get_ip_area
-from users.serializers import UserSerializer
+from post.models import Article, Category
+from post.utils import GeoNotFoundException, get_ip_area
+from user.serializers import UserSerializer
 
 
 class CommentSerializer(ReadCommentSerializer):
@@ -53,7 +53,7 @@ class PostDetailSerializer(serializers.HyperlinkedModelSerializer):
         qs = XtdComment.objects.filter(content_type=content_type,
                                        object_pk=obj.pk,
                                        site__pk=settings.SITE_ID,
-                                       is_public=True)
+                                       is_public=True)[:10]
         comments = CommentSerializer(qs, many=True, context=self.context).data
         return comments
 

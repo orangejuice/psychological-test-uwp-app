@@ -6,8 +6,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from rest_framework import routers
 
 # from posts.views import PostViewSet, CategoryViewSet
-from posts.views import PostViewSet, CategoryViewSet
-from users.views import UserViewSet, GroupViewSet
+from post.views import PostViewSet, CategoryViewSet
+from user.views import UserViewSet, GroupViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)

@@ -1,6 +1,6 @@
 from django.db import models
 
-from users.models import UserProfile
+from user.models import UserProfile
 
 
 class Category(models.Model):
@@ -17,7 +17,7 @@ class Category(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=100, blank=False, default='')
     cate = models.ForeignKey(Category, on_delete=models.CASCADE)
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING)
     content = models.TextField(max_length=5000, blank=False, null=False)
     thumbnail = models.ImageField(null=True, blank=True, default=None, upload_to='thumb')
     ip_address = models.GenericIPAddressField(unpack_ipv4=True, blank=True, null=True)

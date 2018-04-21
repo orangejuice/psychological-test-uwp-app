@@ -36,9 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users.apps.UsersConfig',
+    'user.apps.UserConfig',
     'eval.apps.EvalConfig',
-    'posts.apps.PostsConfig',
+    'post.apps.PostConfig',
     'rest_framework',
     'django_comments',
     'django_comments_xtd',
@@ -50,7 +50,7 @@ COMMENTS_XTD_CONFIRM_EMAIL = False
 
 SITE_ID = 1
 
-AUTH_USER_MODEL = 'users.UserProfile'
+AUTH_USER_MODEL = 'user.UserProfile'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
