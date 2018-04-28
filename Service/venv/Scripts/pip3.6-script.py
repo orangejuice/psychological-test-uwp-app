@@ -1,4 +1,4 @@
-#!C:\Users\cherr\OneDrive\PycharmProject\psychol\venv\Scripts\python.exe
+#!C:\Cherrymeteor\Projects\bs-pshy\Service\venv\Scripts\python.exe
 # EASY-INSTALL-ENTRY-SCRIPT: 'pip==9.0.1','console_scripts','pip3.6'
 __requires__ = 'pip==9.0.1'
 import re

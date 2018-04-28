@@ -1,3 +1,6 @@
+pymysql
+Pillow
+django
 djangorestframework
 django-contrib-comments
-django
+django_comments_xtd

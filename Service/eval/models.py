@@ -19,6 +19,15 @@ class Scale(models.Model):
         return str(self.title)
 
 
+class ScaleResult(models.Model):
+    scale = models.ForeignKey(Scale, on_delete=models.CASCADE)
+    key = models.CharField(max_length=100, blank=False)
+    value = models.CharField(max_length=100, blank=False)
+
+    class Meta:
+        db_table = 'eval_result'
+
+
 class ScaleOption(models.Model):
     # scale = models.ForeignKey(Scale, on_delete=models.CASCADE)
     key = models.IntegerField(blank=False, null=False, default=1)
@@ -36,6 +45,7 @@ class ScaleItem(models.Model):
     scale = models.ForeignKey(Scale, on_delete=models.CASCADE)
     sn = models.IntegerField(default=1)
     question = models.TextField()
+    opts = models.ManyToManyField(to=ScaleOption, through='ScaleItemOpt')
 
     # opts = models.ManyToManyField(to=ScaleOption)
 
@@ -46,27 +56,14 @@ class ScaleItem(models.Model):
         return str(self.question[:20] + '...')
 
 
-class ScaleResult(models.Model):
-    scale = models.ForeignKey(Scale, on_delete=models.CASCADE)
-    key = models.CharField(max_length=100, blank=False)
-    value = models.CharField(max_length=100, blank=False)
-
-    class Meta:
-        db_table = 'eval_result'
-
-
 class ScaleItemOpt(models.Model):
     # 一个问题 -> 多个答案， 不同程度的对应不同的结果
-    question = models.ForeignKey(to=Scale, on_delete=models.CASCADE)
-    opt = models.ForeignKey(to=ScaleOption, on_delete=models.CASCADE)
-    # opts = models.ManyToManyField(to=ScaleOption)
-    bonus = models.ForeignKey(ScaleResult, on_delete=models.CASCADE)
+    question = models.ForeignKey(to=ScaleItem, on_delete=models.CASCADE)
+    option = models.ForeignKey(to=ScaleOption, on_delete=models.CASCADE)
+    bonus = models.ForeignKey(ScaleResult, null=True, default=None, on_delete=models.SET_NULL)
 
     class Meta:
         db_table = 'eval_item_opts'
-
-    def __str__(self):
-        return str(self.question[:20] + '...')
 
 
 class ScaleConclusion(models.Model):
