@@ -18,16 +18,9 @@ class ScaleOptionSerializer(serializers.HyperlinkedModelSerializer):
 class ScaleItemSerializer(serializers.HyperlinkedModelSerializer):
     options = ScaleOptionSerializer(many=True, source='opts', read_only=True)
 
-    # options = serializers.SerializerMethodField()
-
     class Meta:
         model = ScaleItem
         fields = ('url', 'sn', 'question', 'options')
-
-    # def get_options(self, obj):
-    #     qs = ScaleOption.objects.filter(scale=obj.pk)
-    #     opts = ScaleItemSerializer(qs, many=True, context=self.context).data
-    #     return opts
 
 
 class ScaleSerializer(serializers.HyperlinkedModelSerializer):
