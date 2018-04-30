@@ -45,12 +45,11 @@ class ScaleItem(models.Model):
     scale = models.ForeignKey(Scale, on_delete=models.CASCADE)
     sn = models.IntegerField(default=1)
     question = models.TextField()
-    opts = models.ManyToManyField(to=ScaleOption, through='ScaleItemOpt')
-
-    # opts = models.ManyToManyField(to=ScaleOption)
+    opts = models.ManyToManyField(to=ScaleOption, related_name='options', through='ScaleItemOpt')
 
     class Meta:
         db_table = 'eval_item'
+        ordering = ['sn']
 
     def __str__(self):
         return str(self.question[:20] + '...')

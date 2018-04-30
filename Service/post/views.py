@@ -8,9 +8,14 @@ from post.serializers import PostListSerializer, CategorySerializer, PostDetailS
 class PostViewSet(viewsets.GenericViewSet):
     queryset = Article.objects.all()
 
-    @staticmethod
-    def list(request):
+    def list(self, request):
         queryset = Article.objects.all()
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = PostListSerializer(page, many=True, context={'request': request})
+            return self.get_paginated_response(serializer.data)
+
         serializer = PostListSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
