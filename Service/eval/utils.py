@@ -37,7 +37,7 @@ def step_2():
     cursor = db.cursor()
     cursor.execute("SELECT * from eval_define_option_calrule")
     data = cursor.fetchall()
-    db_url = r'C:\Cherrymeteor\Projects\bs-pshy\Service\db.sqlite3'
+    db_url = os.path.join(settings.BASE_DIR, 'db.sqlite3')
     db2 = sqlite3.connect(db_url)
     cursor2 = db2.cursor()
     id_ = 0

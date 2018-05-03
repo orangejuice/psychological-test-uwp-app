@@ -9,7 +9,7 @@ class Scale(models.Model):
     introduction = models.TextField(null=True, blank=True)
     thumbnail = models.ImageField(null=True, blank=True, default=None, upload_to='static/images/thumb')
     is_top = models.BooleanField('置顶', default=False)
-    created = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'eval_scale'
@@ -87,8 +87,9 @@ class ScaleRecord(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING)
     scale = models.ForeignKey(Scale, on_delete=models.CASCADE)
     chose = models.CharField('已选', max_length=1000, validators=[validate_comma_separated_integer_list])
-    final = models.CharField('最终结果', max_length=50)
+    final = models.CharField('最终结果', max_length=100)
     fin_con = models.ForeignKey(ScaleConclusion, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'eval_record'

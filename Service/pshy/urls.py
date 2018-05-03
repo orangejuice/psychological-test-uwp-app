@@ -5,7 +5,8 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from rest_framework import routers
 
-from eval.views import ScaleViewSet, ScaleItemViewSet, ScaleOptionViewSet
+from eval.views import ScaleViewSet, ScaleItemViewSet, ScaleOptionViewSet, ScaleConclusionViewSet, ScaleRecordViewSet, \
+    ScaleResultViewSet
 from post.views import PostViewSet, CategoryViewSet
 from user.views import UserViewSet, GroupViewSet
 
@@ -17,6 +18,9 @@ router.register(r'posts-cate', CategoryViewSet)
 router.register(r'eval', ScaleViewSet)
 router.register(r'eval-item', ScaleItemViewSet)
 router.register(r'eval-option', ScaleOptionViewSet)
+router.register(r'eval-result', ScaleResultViewSet)
+router.register(r'eval-conclusion', ScaleConclusionViewSet)
+router.register(r'eval-record', ScaleRecordViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

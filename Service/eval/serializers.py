@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from eval.models import Scale, ScaleItem, ScaleOption
+from eval.models import Scale, ScaleItem, ScaleOption, ScaleConclusion, ScaleResult, ScaleRecord
 
 
 class ScaleListSerializer(serializers.HyperlinkedModelSerializer):
@@ -34,3 +34,29 @@ class ScaleSerializer(serializers.HyperlinkedModelSerializer):
         qs = ScaleItem.objects.filter(scale=obj.pk)
         items = ScaleItemSerializer(qs, many=True, context=self.context).data
         return items
+
+
+class ScaleResultSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ScaleResult
+        fields = ('url', 'key', 'value')
+
+
+class ScaleConclusionSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ScaleConclusion
+        fields = ('url', 'key', 'description')
+
+
+class ScaleRecordSerializer(serializers.HyperlinkedModelSerializer):
+    conclusion = ScaleConclusionSerializer(read_only=True)
+
+    class Meta:
+        model = ScaleRecord
+        fields = ('url', 'final', 'conclusion')
+
+
+class ScaleRecordAddSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ScaleRecord
+        fields = ('user', 'scale', 'chose',)
