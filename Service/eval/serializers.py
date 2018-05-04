@@ -53,10 +53,10 @@ class ScaleRecordSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = ScaleRecord
-        fields = ('url', 'final', 'conclusion')
+        fields = ('url', 'fin_score', 'conclusion')
 
 
 class ScaleRecordAddSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ScaleRecord
-        fields = ('user', 'scale', 'chose',)
+        fields = ('user', 'scale', 'chose', 'fin_score', 'fin_con')

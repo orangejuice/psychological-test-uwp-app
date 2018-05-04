@@ -1,10 +1,10 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, mixins
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
 from eval.models import Scale, ScaleItem, ScaleOption, ScaleRecord, ScaleConclusion, ScaleResult
 from eval.serializers import ScaleListSerializer, ScaleSerializer, ScaleItemSerializer, ScaleOptionSerializer, \
-    ScaleConclusionSerializer, ScaleResultSerializer, ScaleRecordAddSerializer
+    ScaleConclusionSerializer, ScaleResultSerializer, ScaleRecordAddSerializer, ScaleRecordSerializer
 
 
 # Create your views here.
@@ -57,17 +57,32 @@ class ScaleConclusionViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ScaleConclusionSerializer
 
 
-class ScaleRecordViewSet(viewsets.GenericViewSet):
-    def get_queryset(self):
-        user = self.request.user
-        return ScaleRecord.objects.filter(user=user)
+class ScaleRecordViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = ScaleRecord.objects.all()
+    serializer_class = ScaleRecordSerializer
 
-    def create(self, request, *args, **kwargs):
+    # 有错误哦
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     return ScaleRecord.objects.filter(user=user)
+
+    def create(self, request):
+        request.data['fin_score'], request.data['fin_con'] = self.get_score(request.data['scale'], request.data['opts'])
+        request.data['user'] = self.request.user
         serializer = ScaleRecordAddSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def get_score(self, scale, opts):
+        for opt in opts:
+            question = ScaleItem.objects.filter(scale=scale, sn=opt.key)[0]
+
+            # ser = ScaleItemSerializer(question, context={'request', self.request})
+            # print(ser)
+
+        return 1, 2
 
     def get_success_headers(self, data):
         try:
