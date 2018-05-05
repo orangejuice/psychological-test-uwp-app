@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from eval.models import Scale, ScaleItem, ScaleOption, ScaleConclusion, ScaleResult, ScaleRecord
+from eval.models import Scale, ScaleItem, ScaleOption, ScaleConclusion, ScaleResult, ScaleRecord, ScaleItemOpt
 
 
 class ScaleListSerializer(serializers.HyperlinkedModelSerializer):
@@ -9,18 +9,43 @@ class ScaleListSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'title', 'introduction', 'thumbnail', 'created', 'is_top')
 
 
-class ScaleOptionSerializer(serializers.HyperlinkedModelSerializer):
+class ScaleOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScaleOption
-        fields = ('url', 'key', 'value')
+        fields = ('key', 'value')
+
+
+class ScaleResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScaleResult
+        fields = ('key', 'value')
+
+
+class ScaleItemOptSerializer(serializers.ModelSerializer):
+    key = serializers.ReadOnlyField(source='option.key')
+    value = serializers.ReadOnlyField(source='option.value')
+    score = serializers.ReadOnlyField(source='option.score')
+    bonus = ScaleResultSerializer(read_only=True)
+
+    class Meta:
+        model = ScaleItemOpt
+        fields = ('key', 'value', 'bonus', 'score')
 
 
 class ScaleItemSerializer(serializers.HyperlinkedModelSerializer):
-    options = ScaleOptionSerializer(many=True, source='opts', read_only=True)
+    opts = ScaleOptionSerializer(many=True, read_only=True)
 
     class Meta:
         model = ScaleItem
-        fields = ('url', 'sn', 'question', 'options')
+        fields = ('url', 'sn', 'question', 'opts')
+
+
+class ScaleItemCalSerializer(serializers.ModelSerializer):
+    opts = ScaleItemOptSerializer(many=True, source='scaleitemopt_set', read_only=True)
+
+    class Meta:
+        model = ScaleItem
+        fields = ('sn', 'question', 'opts')
 
 
 class ScaleSerializer(serializers.HyperlinkedModelSerializer):
@@ -36,12 +61,6 @@ class ScaleSerializer(serializers.HyperlinkedModelSerializer):
         return items
 
 
-class ScaleResultSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = ScaleResult
-        fields = ('url', 'key', 'value')
-
-
 class ScaleConclusionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ScaleConclusion
@@ -49,14 +68,12 @@ class ScaleConclusionSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ScaleRecordSerializer(serializers.HyperlinkedModelSerializer):
-    conclusion = ScaleConclusionSerializer(read_only=True)
-
     class Meta:
         model = ScaleRecord
-        fields = ('url', 'fin_score', 'conclusion')
+        fields = ('url', 'score')
 
 
-class ScaleRecordAddSerializer(serializers.HyperlinkedModelSerializer):
+class ScaleRecordAddSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScaleRecord
-        fields = ('user', 'scale', 'chose', 'fin_score', 'fin_con')
+        fields = ('user', 'scale', 'chose', 'score', 'result')

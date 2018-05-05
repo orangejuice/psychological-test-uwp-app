@@ -4,7 +4,8 @@ from rest_framework.settings import api_settings
 
 from eval.models import Scale, ScaleItem, ScaleOption, ScaleRecord, ScaleConclusion, ScaleResult
 from eval.serializers import ScaleListSerializer, ScaleSerializer, ScaleItemSerializer, ScaleOptionSerializer, \
-    ScaleConclusionSerializer, ScaleResultSerializer, ScaleRecordAddSerializer, ScaleRecordSerializer
+    ScaleConclusionSerializer, ScaleResultSerializer, ScaleRecordAddSerializer, ScaleRecordSerializer, \
+    ScaleItemCalSerializer
 
 
 # Create your views here.
@@ -61,30 +62,74 @@ class ScaleRecordViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = ScaleRecord.objects.all()
     serializer_class = ScaleRecordSerializer
 
-    # 有错误哦
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     return ScaleRecord.objects.filter(user=user)
+    def get_queryset(self):
+        user = self.request.user.pk
+        return ScaleRecord.objects.filter(user=user)
 
     def create(self, request):
-        request.data['fin_score'], request.data['fin_con'] = self.get_score(request.data['scale'], request.data['opts'])
-        request.data['user'] = self.request.user
-        serializer = ScaleRecordAddSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+        request.data['score'] = self.get_score(request.data['scale'], request.data['opts'])
+        request.data['result'] = self.get_conclusion(request.data['scale'], request.data['score'])
+        request.data['chose'] = request.data['opts']
+        request.data['user'] = request.user.pk
+        serializer = ScaleRecordAddSerializer(data=request.data, context={'request', request})
+        serializer.is_valid()
+        self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def get_score(self, scale, opts):
-        for opt in opts:
-            question = ScaleItem.objects.filter(scale=scale, sn=opt.key)[0]
+        item_score = {}
+        score = {}
+        # 答题完成数量校验
+        for sn, chose in opts.items():
+            question = ScaleItem.objects.filter(scale=scale, sn=sn)[0]
+            ser = ScaleItemCalSerializer(question, context={'request', self.request})
+            for opt in ser.data['opts']:
+                if opt['key'] == chose and opt['bonus'] is not None:
+                    result = opt['bonus']['key']
+                    point = opt['score']
+                    item_score[sn] = point
+                    if result in score.keys():
+                        score[result] += point
+                    else:
+                        score[result] = point
+                    break
+        # Anchor    在40题中挑出三个得分最高的项目 + 4
+        if scale == 3:
+            sns = sorted(item_score, key=item_score.get, reverse=True)[:3]
+            for sn in sns:
+                question = ScaleItem.objects.filter(scale=scale, sn=sn)[0]
+                ser = ScaleItemCalSerializer(question, context={'request', self.request})
+                result = ser.data['opts'][0]['bonus']['key']
+                score[result] += 4
+        print(score)
+        return score
 
-            # ser = ScaleItemSerializer(question, context={'request', self.request})
-            # print(ser)
+    @staticmethod
+    def get_conclusion(scale, score):
+        # {'J': 2, 'P':4}
+        # MBTI      E I / S N / T F / J P 选4
+        # HOLLAND   分别得分 + 1代码对应结论 + 3代码对应结论
+        # Anchor    TF  GM  AU  SE  EC  SV  CH  LS 选1
+        fin_code = ''
+        if scale == 1:
+            fin_code += 'E' if score['E'] >= score['I'] else 'I'
+            fin_code += 'S' if score['S'] >= score['N'] else 'N'
+            fin_code += 'T' if score['T'] >= score['F'] else 'F'
+            fin_code += 'J' if score['J'] >= score['P'] else 'P'
+        elif scale == 2:
+            fin_code = fin_code.join(sorted(score, key=score.get, reverse=True)[:3])
+        elif scale == 3:
+            fin_code = fin_code.join(sorted(score, key=score.get, reverse=True)[:1])
+        print(fin_code)
+        return fin_code
 
-        return 1, 2
+    @staticmethod
+    def perform_create(serializer):
+        serializer.save()
 
-    def get_success_headers(self, data):
+    @staticmethod
+    def get_success_headers(data):
         try:
             return {'Location': str(data[api_settings.URL_FIELD_NAME])}
         except (TypeError, KeyError):

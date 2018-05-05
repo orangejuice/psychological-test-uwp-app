@@ -19,8 +19,7 @@ class PostViewSet(viewsets.GenericViewSet):
         serializer = PostListSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
-    @staticmethod
-    def retrieve(request, pk=None):
+    def retrieve(self, request, pk=None):
         queryset = Article.objects.get(pk=pk)
         serializer = PostDetailSerializer(queryset, context={'request': request})
         return Response(serializer.data)

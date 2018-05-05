@@ -1,7 +1,6 @@
-from django.contrib.postgres.fields import JSONField
-from django.core.validators import validate_comma_separated_integer_list
 from django.db import models
 
+from jsonfield import JSONField
 from user.models import UserProfile
 
 
@@ -87,9 +86,9 @@ class ScaleConclusion(models.Model):
 class ScaleRecord(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING)
     scale = models.ForeignKey(Scale, on_delete=models.CASCADE)
-    chose = models.CharField('已选', max_length=1000, validators=[validate_comma_separated_integer_list])
-    fin_score = JSONField('最终得分', max_length=500)
-    fin_con = models.ForeignKey(ScaleConclusion, on_delete=models.CASCADE)
+    chose = JSONField('已选', null=False)
+    score = JSONField('最终得分', null=False)
+    result = models.CharField(max_length=100, blank=False)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
