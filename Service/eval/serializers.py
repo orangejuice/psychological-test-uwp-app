@@ -4,9 +4,17 @@ from eval.models import Scale, ScaleItem, ScaleOption, ScaleConclusion, ScaleRes
 
 
 class ScaleListSerializer(serializers.HyperlinkedModelSerializer):
+    done = serializers.SerializerMethodField()
+
     class Meta:
         model = Scale
-        fields = ('url', 'title', 'introduction', 'thumbnail', 'created', 'is_top')
+        fields = ('url', 'title', 'introduction', 'thumbnail', 'created', 'is_top', 'done')
+
+    def get_done(self, obj):
+        user = self.context['request'].user.pk
+        qs = ScaleRecord.objects.filter(scale=obj.pk, user=user)[:1]
+        record = ScaleRecordSerializer(qs, many=True, context=self.context).data
+        return record[0]['url'] if qs.count() else None
 
 
 class ScaleOptionSerializer(serializers.ModelSerializer):
@@ -68,9 +76,25 @@ class ScaleConclusionSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ScaleRecordSerializer(serializers.HyperlinkedModelSerializer):
+    conclusion = serializers.SerializerMethodField()
+
     class Meta:
         model = ScaleRecord
-        fields = ('url', 'score')
+        fields = ('url', 'score', 'conclusion', 'created')
+
+    def get_conclusion(self, obj):
+        # 分别得分 + 代码对应结论
+        # HOLLAND   分别得分 + 1代码对应结论 + 3代码对应结论
+        con = {}
+        if obj.scale.pk is 2:
+            qs = ScaleConclusion.objects.get(scale=obj.scale, key=obj.result[0])
+            con[0] = ScaleConclusionSerializer(qs, context=self.context).data
+            qs = ScaleConclusion.objects.get(scale=obj.scale, key=obj.result)
+            con[1] = ScaleConclusionSerializer(qs, context=self.context).data
+        else:
+            qs = ScaleConclusion.objects.get(scale=obj.scale, key=obj.result)
+            con[0] = ScaleConclusionSerializer(qs, context=self.context).data
+        return con
 
 
 class ScaleRecordAddSerializer(serializers.ModelSerializer):

@@ -74,15 +74,6 @@ class ScaleConclusion(models.Model):
         db_table = 'eval_conclusion'
 
 
-# class ScaleCorrespond(models.Model):
-#     scale = models.ForeignKey(Scale, on_delete=models.CASCADE)
-#     result = models.ForeignKey(ScaleResult, on_delete=models.CASCADE)
-#     opts = models.ForeignKey('选项与结果对应关系', max_length=1000, validators=[validate_comma_separated_integer_list])
-#
-#     class Meta:
-#         db_table = 'eval_option_result'
-
-
 class ScaleRecord(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING)
     scale = models.ForeignKey(Scale, on_delete=models.CASCADE)
@@ -93,3 +84,4 @@ class ScaleRecord(models.Model):
 
     class Meta:
         db_table = 'eval_record'
+        ordering = ['-created']

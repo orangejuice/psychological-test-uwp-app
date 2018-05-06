@@ -54,11 +54,11 @@ class ScaleResultViewSet(viewsets.GenericViewSet):
 
 
 class ScaleConclusionViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = ScaleRecord.objects.all()
+    queryset = ScaleConclusion.objects.all()
     serializer_class = ScaleConclusionSerializer
 
 
-class ScaleRecordViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class ScaleRecordViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = ScaleRecord.objects.all()
     serializer_class = ScaleRecordSerializer
 
@@ -68,7 +68,7 @@ class ScaleRecordViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     def create(self, request):
         request.data['score'] = self.get_score(request.data['scale'], request.data['opts'])
-        request.data['result'] = self.get_conclusion(request.data['scale'], request.data['score'])
+        request.data['result'] = self.get_result(request.data['scale'], request.data['score'])
         request.data['chose'] = request.data['opts']
         request.data['user'] = request.user.pk
         serializer = ScaleRecordAddSerializer(data=request.data, context={'request', request})
@@ -80,7 +80,7 @@ class ScaleRecordViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     def get_score(self, scale, opts):
         item_score = {}
         score = {}
-        # 答题完成数量校验
+        # TODO 答题校验
         for sn, chose in opts.items():
             question = ScaleItem.objects.filter(scale=scale, sn=sn)[0]
             ser = ScaleItemCalSerializer(question, context={'request', self.request})
@@ -102,14 +102,13 @@ class ScaleRecordViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
                 ser = ScaleItemCalSerializer(question, context={'request', self.request})
                 result = ser.data['opts'][0]['bonus']['key']
                 score[result] += 4
-        print(score)
         return score
 
     @staticmethod
-    def get_conclusion(scale, score):
+    def get_result(scale, score):
         # {'J': 2, 'P':4}
         # MBTI      E I / S N / T F / J P 选4
-        # HOLLAND   分别得分 + 1代码对应结论 + 3代码对应结论
+        # HOLLAND   R I A S E C 选3
         # Anchor    TF  GM  AU  SE  EC  SV  CH  LS 选1
         fin_code = ''
         if scale == 1:
@@ -121,7 +120,6 @@ class ScaleRecordViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             fin_code = fin_code.join(sorted(score, key=score.get, reverse=True)[:3])
         elif scale == 3:
             fin_code = fin_code.join(sorted(score, key=score.get, reverse=True)[:1])
-        print(fin_code)
         return fin_code
 
     @staticmethod
@@ -134,6 +132,3 @@ class ScaleRecordViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             return {'Location': str(data[api_settings.URL_FIELD_NAME])}
         except (TypeError, KeyError):
             return {}
-
-    def retrieve(self, request, pk=None):
-        pass
