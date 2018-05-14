@@ -25,11 +25,11 @@ router.register(r'eval-record', ScaleRecordViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    url(r'^', include(router.urls)),
+    url(r'^api/', include(router.urls)),
     # url(r'^posts/', views.PostListAPIView.as_view()),
     # url(r'^posts/(\d+)', views.PostDetailAPIView.as_view(), name='article-detail'),
-    url(r'^comments/', include('django_comments_xtd.urls')),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/comments/', include('django_comments_xtd.urls')),
+    url(r'^api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
 ]
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
