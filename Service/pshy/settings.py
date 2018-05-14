@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_comments',
     'django_comments_xtd',
+    'rest_framework.authtoken'
+
 ]
 
 COMMENTS_APP = 'django_comments_xtd'
@@ -73,6 +75,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     )
 }
 

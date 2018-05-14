@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from rest_framework import routers
+from rest_framework.authtoken import views
 
 from eval.views import ScaleViewSet, ScaleItemViewSet, ScaleOptionViewSet, ScaleConclusionViewSet, ScaleRecordViewSet, \
     ScaleResultViewSet
@@ -26,9 +27,8 @@ router.register(r'eval-record', ScaleRecordViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     url(r'^api/', include(router.urls)),
-    # url(r'^posts/', views.PostListAPIView.as_view()),
-    # url(r'^posts/(\d+)', views.PostDetailAPIView.as_view(), name='article-detail'),
     url(r'^api/comments/', include('django_comments_xtd.urls')),
+    url(r'^api/token-auth/', views.obtain_auth_token),
     url(r'^api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
 ]
