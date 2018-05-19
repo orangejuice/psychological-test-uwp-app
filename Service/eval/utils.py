@@ -1,12 +1,13 @@
 import os
 import sqlite3
-
+import html2text
 import pymysql
-from django.conf import settings
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def gen_db():
-    db_url = os.path.join(settings.BASE_DIR, 'db.sqlite3')
+    db_url = os.path.join(BASE_DIR, 'db.sqlite3')
     db = sqlite3.connect(db_url)
     cursor = db.cursor()
     for i in range(1, 94):
@@ -37,7 +38,7 @@ def step_2():
     cursor = db.cursor()
     cursor.execute("SELECT * from eval_define_option_calrule")
     data = cursor.fetchall()
-    db_url = os.path.join(settings.BASE_DIR, 'db.sqlite3')
+    db_url = os.path.join(BASE_DIR, 'db.sqlite3')
     db2 = sqlite3.connect(db_url)
     cursor2 = db2.cursor()
     id_ = 0
@@ -74,6 +75,25 @@ def step_2():
     db.close()
 
 
+def converter():
+    db_url = os.path.join(BASE_DIR, 'db.sqlite3')
+    db = sqlite3.connect(db_url)
+    cursor = db.cursor()
+
+    # sql = """SELECT description, id from eval_conclusion"""
+    sql = """SELECT question, id from eval_item"""
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    for (r, id_) in result:
+        md = html2text.html2text(r)
+        update = """UPDATE eval_conclusion set description='%s' where id = %d """ % (md, id_)
+        update = """UPDATE eval_item set question='%s' where id = %d """ % (md, id_)
+        cursor.execute(update)
+    db.commit()
+    db.close()
+
+
 if __name__ == '__main__':
+    converter()
     # gen_db()
-    step_2()
+    # step_2()
