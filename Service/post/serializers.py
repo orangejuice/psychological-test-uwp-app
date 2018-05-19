@@ -19,24 +19,24 @@ class CommentSerializer(ReadCommentSerializer):
 
 
 class PostListSerializer(serializers.HyperlinkedModelSerializer):
-    author_name = serializers.ReadOnlyField(source='author.username')
+    author = UserSerializer(read_only=True)
     cate_name = serializers.ReadOnlyField(source='cate.name')
 
     class Meta:
         model = Article
-        fields = ('url', 'title', 'cate', 'cate_name', 'thumbnail', 'author', 'author_name',
+        fields = ('url', 'title', 'cate', 'cate_name', 'thumbnail', 'author',
                   'content', 'created', 'updated')
 
 
 class PostDetailSerializer(serializers.HyperlinkedModelSerializer):
-    author_name = serializers.ReadOnlyField(source='author.username')
+    author = UserSerializer(read_only=True)
     cate_name = serializers.ReadOnlyField(source='cate.name')
     comments = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
 
     class Meta:
         model = Article
-        fields = ('url', 'title', 'cate', 'cate_name', 'thumbnail', 'author', 'author_name',
+        fields = ('url', 'title', 'cate', 'cate_name', 'thumbnail', 'author',
                   'content', 'created', 'updated', 'comments', 'location')
 
     @staticmethod

@@ -40,15 +40,46 @@ INSTALLED_APPS = [
     'eval.apps.EvalConfig',
     'post.apps.PostConfig',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_comments',
     'django_comments_xtd',
-    'rest_framework.authtoken'
-
+    'rest_auth',
+    'rest_auth.registration',
+    'allauth',
+    'allauth.account',
+    # 'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.weibo',
+    # 'allauth.socialaccount.providers.weixin',
 ]
+
+#
+# AUTHENTICATION_BACKENDS = (
+#       # django admin所使用的用户登录与django-allauth无关
+#       'django.contrib.auth.backends.ModelBackend',
+#       # `allauth` specific authentication methods, such as login by e-mail
+#       'allauth.account.auth_backends.AuthenticationBackend',
+# )
+#
+#
+# # SMTP服务器，我使用的是sendclound的服务
+# EMAIL_HOST = 'Ia3BO1ZkEb8xDfq5QMMKYdFMZko0cfsI.sendcloud.net'
+# EMAIL_HOST_USER = 'cherrymeteor_test_RJUezC '
+# EMAIL_HOST_PASSWORD = 'ublMhJYNcskSHQRb'
+# EMAIL_PORT = 25
+# # 是否使用了SSL 或者TLS
+# EMAIL_USE_SSL = True
+# EMAIL_USE_TLS = True
+# # 默认发件人，不设置的话django默认使用的webmaster@localhost
+# DEFAULT_FROM_EMAIL = 'Meteor <noreply@oranjejuice.cc>'
+#
+# ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+# ACCOUNT_EMAIL_REQUIRED = True
 
 COMMENTS_APP = 'django_comments_xtd'
 COMMENTS_XTD_MAX_THREAD_LEVEL = 1
 COMMENTS_XTD_CONFIRM_EMAIL = False
+
+# LOGIN_REDIRECT_URL = '/'
 
 SITE_ID = 1
 
