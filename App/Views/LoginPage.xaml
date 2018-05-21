@@ -1,0 +1,114 @@
+﻿<Page
+    x:Class="App.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    Style="{StaticResource PageStyle}"
+    DataContext="{Binding LoginViewModel, Source={StaticResource Locator}}"
+    mc:Ignorable="d">
+    <!--<Grid
+        x:Name="ContentArea"
+        Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+        Margin="{StaticResource MediumLeftRightMargin}">
+        <Grid
+            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}" HorizontalAlignment="Stretch">
+            <StackPanel Orientation="Vertical">
+                <TextBox Name="Username" Text="{x:Bind ViewModel.Username, Mode=TwoWay}" Width="200" Height="20"></TextBox>
+                <PasswordBox Name="Password" KeyDown="Password_KeyDown" Password="{x:Bind ViewModel.Password, Mode=TwoWay}"  Width="200" Height="20"></PasswordBox>
+                <Button Click="LoginActionAsync" x:Uid="Login" HorizontalAlignment="Center"></Button>
+                <TextBlock Name="Status" Text="{x:Bind ViewModel.StatusText, Mode=OneWay}" Visibility="{x:Bind ViewModel.StatusVisable, Mode=OneWay}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>-->
+
+    <Grid
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        animations:Implicit.ShowAnimations="{StaticResource DefaultShowAnimations}"
+        animations:Implicit.HideAnimations="{StaticResource DefaultHideAnimations}"
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        
+        <Image
+            Source="ms-appx:///Assets/Banner/BackgroundPhoto.jpg"
+            Grid.Row="0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            Opacity="0.8"
+            Stretch="UniformToFill" />
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="20,20,0,10">
+            <Rectangle Fill="LightGray" Width="10" Margin="0,0,10,0" />
+            <TextBlock Style="{StaticResource PageTitleStyle}" x:Uid="Authentication_Login"/>
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="2"
+            VerticalAlignment="Center"
+            Orientation="Vertical">
+
+            <TextBox
+                x:Uid="Authentication_Username"
+                Width="480"
+                BorderThickness="0,0,0,1"
+                FontFamily="Segoe"
+                FontSize="{StaticResource MediumFontSize}"
+                Margin="0,20,0,20"
+                VerticalAlignment="Center"
+                Padding="2,5,0,0"
+                Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                KeyDown="Password_KeyDown">
+            </TextBox>
+            <PasswordBox
+                x:Uid="Authentication_Password"
+                Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                PasswordRevealMode="Peek"
+                Width="480"
+                BorderThickness="0,0,0,1"
+                FontFamily="Segoe"
+                FontSize="{StaticResource MediumFontSize}"
+                Margin="0,20,0,20"
+                VerticalAlignment="Center"
+                Padding="2,5,0,0"
+                KeyDown="Password_KeyDown">
+            </PasswordBox>
+            <HyperlinkButton x:Uid="Authentication_ForgotPassword" />
+
+            <StackPanel
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <!--<Button
+                    x:Uid="Authentication_SetUp"
+                    Command="{Binding SetupHelloCommand}"
+                    IconSourcePath="{StaticResource HelloIcon}"
+                    IsEnabled="{Binding CanSetupHello}"
+                    Style="{StaticResource AuthenticationButtonStyle}" />-->
+                <Button
+                    x:Uid="Authentication_SignIn"
+                    Click="LoginActionAsync"
+                    Padding="20,10,20,10"
+                    IsEnabled="{Binding CanSignIn}"/>
+
+            </StackPanel>
+            <!--<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="{StaticResource AuthenticationGitHubMargin}">
+                <TextBlock Text="{Binding VersionPackage}" Style="{StaticResource AuthenticationVersionStyle}" />
+                <Rectangle Style="{StaticResource AutenticationSeparateStyle}" />
+                -->
+            <!--<HyperlinkButton x:Uid="Authentication_GitHub" Style="{StaticResource AuthenticationGitHubStyle}" />-->
+            <!--
+            </StackPanel>-->
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <TextBlock x:Uid="Authentication_NotAccount" Margin="0,20,10,20"/>
+                <HyperlinkButton x:Uid="Authentication_NotAccountSignUp"/>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</Page>
