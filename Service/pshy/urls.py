@@ -30,9 +30,11 @@ urlpatterns = [
     url(r'^api/auth/', include('rest_auth.urls')),
     url(r'^api/auth/registration', include('rest_auth.registration.urls')),
 
+    url(r'^accounts/', include('allauth.urls')),
     url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
 ]
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

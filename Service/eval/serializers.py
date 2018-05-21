@@ -8,7 +8,7 @@ class ScaleListSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Scale
-        fields = ('url', 'title', 'introduction', 'thumbnail', 'created', 'is_top', 'done')
+        fields = ('url', 'id', 'title', 'introduction', 'thumbnail', 'created', 'is_top', 'done')
 
     def get_done(self, obj):
         user = self.context['request'].user.pk
@@ -58,15 +58,22 @@ class ScaleItemCalSerializer(serializers.ModelSerializer):
 
 class ScaleSerializer(serializers.HyperlinkedModelSerializer):
     items = serializers.SerializerMethodField()
+    done = serializers.SerializerMethodField()
 
     class Meta:
         model = Scale
-        fields = ('url', 'title', 'items')
+        fields = ('url', 'id', 'title', 'introduction', 'thumbnail', 'created', 'is_top', 'items', 'done')
 
     def get_items(self, obj):
         qs = ScaleItem.objects.filter(scale=obj.pk)
         items = ScaleItemSerializer(qs, many=True, context=self.context).data
         return items
+
+    def get_done(self, obj):
+        user = self.context['request'].user.pk
+        qs = ScaleRecord.objects.filter(scale=obj.pk, user=user)[:1]
+        record = ScaleRecordSerializer(qs, many=True, context=self.context).data
+        return record[0]['url'] if qs.count() else None
 
 
 class ScaleConclusionSerializer(serializers.HyperlinkedModelSerializer):

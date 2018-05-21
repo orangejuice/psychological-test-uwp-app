@@ -47,33 +47,30 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'allauth',
     'allauth.account',
-    # 'allauth.socialaccount',
+    'allauth.socialaccount',
     # 'allauth.socialaccount.providers.weibo',
     # 'allauth.socialaccount.providers.weixin',
 ]
 
 #
-# AUTHENTICATION_BACKENDS = (
-#       # django admin所使用的用户登录与django-allauth无关
-#       'django.contrib.auth.backends.ModelBackend',
-#       # `allauth` specific authentication methods, such as login by e-mail
-#       'allauth.account.auth_backends.AuthenticationBackend',
-# )
-#
-#
-# # SMTP服务器，我使用的是sendclound的服务
-# EMAIL_HOST = 'Ia3BO1ZkEb8xDfq5QMMKYdFMZko0cfsI.sendcloud.net'
-# EMAIL_HOST_USER = 'cherrymeteor_test_RJUezC '
-# EMAIL_HOST_PASSWORD = 'ublMhJYNcskSHQRb'
-# EMAIL_PORT = 25
-# # 是否使用了SSL 或者TLS
-# EMAIL_USE_SSL = True
-# EMAIL_USE_TLS = True
-# # 默认发件人，不设置的话django默认使用的webmaster@localhost
-# DEFAULT_FROM_EMAIL = 'Meteor <noreply@oranjejuice.cc>'
-#
-# ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-# ACCOUNT_EMAIL_REQUIRED = True
+AUTHENTICATION_BACKENDS = (
+    # django admin所使用的用户登录与django-allauth无关
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_HOST_USER = 'cherrymeteor@foxmail.com'
+EMAIL_HOST_PASSWORD = 'cwpyzjgvmtpcbfgf'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = '橘子心理<cherrymeteor@foxmail.com>'
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
 
 COMMENTS_APP = 'django_comments_xtd'
 COMMENTS_XTD_MAX_THREAD_LEVEL = 1
@@ -85,17 +82,20 @@ SITE_ID = 1
 
 AUTH_USER_MODEL = 'user.UserProfile'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, )
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
 MEDIA_URL = '/images/'
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 # List of finder classes that know how to find static files in
 # various locations.
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
+# STATICFILES_FINDERS = (
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+# )
 
 REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
@@ -174,7 +174,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 # LANGUAGE_CODE = 'en-us'
-LANGUAGE_CODE = 'zh-cn'
+LANGUAGE_CODE = 'zh-CN'
 
 # TIME_ZONE = 'UTC'
 TIME_ZONE = 'Asia/Shanghai'
