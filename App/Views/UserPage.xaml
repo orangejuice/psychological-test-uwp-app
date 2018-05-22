@@ -4,27 +4,59 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:c="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Style="{StaticResource PageStyle}"
     DataContext="{Binding UserViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
     <Grid
         x:Name="ContentArea"
-        Margin="{StaticResource MediumLeftRightMargin}"
-        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        Padding="{StaticResource MediumLeftRightMargin}"
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+        animations:Implicit.ShowAnimations="{StaticResource DefaultShowAnimations}"
+        animations:Implicit.HideAnimations="{StaticResource DefaultHideAnimations}">
         <!--UserCenter,  Profile, avatar, username, -->
-        <Pivot Title="EMAIL">
-            <PivotItem Header="All">
-                <TextBlock Text="all emails go here." />
-            </PivotItem>
-            <PivotItem Header="Unread">
+        <Pivot x:Uid="UserCenter">
+            <PivotItem x:Uid="UserCenter_Contribute">
                 <TextBlock Text="unread emails go here." />
             </PivotItem>
-            <PivotItem Header="Flagged">
+            <!--<PivotItem x:Uid="UserCenter_Personal">
+
+            </PivotItem>-->
+            <PivotItem x:Uid="UserCenter_Favorites">
                 <TextBlock Text="flagged emails go here." />
             </PivotItem>
-            <PivotItem Header="Urgent">
-                <TextBlock Text="urgent emails go here." />
+            <PivotItem x:Uid="UserCenter_Account">
+                <StackPanel Orientation="Vertical">
+                    <!--avatar / email / password-->
+                    <TextBlock VerticalAlignment="Bottom" x:Uid="UserCenter_Username" Style="{StaticResource ListTitleStyle}" Margin="0,20,0,0"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox HorizontalAlignment="Left" Margin="0,10,0,20" IsReadOnly="True" BorderThickness="0,0,0,1" Width="200" Text="{x:Bind ViewModel.OrangeService.CurrentUser.username, Mode=OneWay}"/>
+                        <!--<TextBlock VerticalAlignment="Bottom" Margin="0,0,0,0" Foreground="Gray" Text="Temporarily do not support modification"/>-->
+                    </StackPanel>
+                    <TextBlock VerticalAlignment="Bottom" x:Uid="UserCenter_Avatar" Margin="0,30,20,0" Style="{StaticResource ListTitleStyle}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,20">
+                        <PersonPicture Width="60" Height="60" ProfilePicture="{x:Bind ViewModel.OrangeService.CurrentUser.avatar, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <HyperlinkButton Margin="30,0,0,0" x:Uid="UserCenter_Change" Click="AvatarChange_ClickAsync"/>
+                    </StackPanel>
+                    <!--<TextBlock VerticalAlignment="Bottom" x:Uid="UserCenter_E-mail" Margin="0,0,20,0" Style="{StaticResource TitleTextBlockStyle}"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,20">
+                        
+                        <HyperlinkButton Margin="30,0,0,0" Content=""/>
+                    </StackPanel>-->
+                    <TextBlock VerticalAlignment="Bottom" x:Uid="UserCenter_Password" Style="{StaticResource ListTitleStyle}" Margin="0,30,0,10"/>
+
+                    <!--<TextBlock VerticalAlignment="Bottom" Margin="0,0,10,0" Text="Current Password"/>-->
+                    <PasswordBox HorizontalAlignment="Left" BorderThickness="0,0,0,1" x:Uid="Current_Password" Width="200"/>
+                    <PasswordBox HorizontalAlignment="Left" BorderThickness="0,0,0,1" x:Uid="New_Password" Width="200"/>
+                    <PasswordBox HorizontalAlignment="Left" BorderThickness="0,0,0,1" x:Uid="New_Password" Width="200"/>
+                    <HyperlinkButton Margin="0,10,0,0" x:Uid="UserCenter_Change" Click="PasswordChange_Click"/>
+
+                    <TextBlock VerticalAlignment="Bottom" x:Uid="UserCenter_Logout" Style="{StaticResource ListTitleStyle}" Margin="0,30,0,10"/>
+                    <HyperlinkButton Margin="0,10,0,0" x:Uid="UserCenter_Accept" Click="Logout_Click"/>
+                </StackPanel>
             </PivotItem>
         </Pivot>
+        <c:InAppNotification Name="Notification"/>
     </Grid>
 </Page>

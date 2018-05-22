@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDisplayName" xml:space="preserve">
-    <value>App</value>
+    <value>Orange Phychology</value>
     <comment>Application display name</comment>
   </data>
   <data name="AppDescription" xml:space="preserve">
-    <value>App</value>
+    <value>A phychology-related info share app and test yourself here!</value>
     <comment>Application description</comment>
   </data>
   <data name="ExceptionNavigationServiceExPageNotFound" xml:space="preserve">
@@ -148,50 +148,6 @@
   <data name="Shell_Blank.Content" xml:space="preserve">
     <value>Blank</value>
     <comment>Navigation view item name for Blank</comment>
-  </data>
-  <data name="WebView_FailedMessage.Text" xml:space="preserve">
-    <value>Page failed to load. Check connection and retry.</value>
-    <comment>Load failure message for WebView</comment>
-  </data>
-  <data name="WebView_Loading.Text" xml:space="preserve">
-    <value>Loading...</value>
-    <comment>Loading message for WebView</comment>
-  </data>
-  <data name="WebView_Retry.Content" xml:space="preserve">
-    <value>retry</value>
-    <comment>Retry button for WebView</comment>
-  </data>
-  <data name="WebView_BrowserBackButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Back</value>
-    <comment>WebView back button automation name property for WebView</comment>
-  </data>
-  <data name="WebView_BrowserBackButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Back</value>
-    <comment>Back button automation tooltip property for WebView</comment>
-  </data>
-  <data name="WebView_BrowserForwardButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Forward</value>
-    <comment>Forward button automation name property for WebView</comment>
-  </data>
-  <data name="WebView_BrowserForwardButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Forward</value>
-    <comment>Forward button automation tooltip property for WebView</comment>
-  </data>
-  <data name="WebView_RefreshBrowserButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Refresh</value>
-    <comment>Refresh button automation name property for WebView</comment>
-  </data>
-  <data name="WebView_RefreshBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Refresh</value>
-    <comment>Refresh button automation tooltip property for WebView</comment>
-  </data>
-  <data name="WebView_OpenInBrowserButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Open in browser</value>
-    <comment>Open in browser button automation name property for WebView</comment>
-  </data>
-  <data name="WebView_OpenInBrowserButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Open in browser</value>
-    <comment>Open in browser button automation tooltip property for WebView</comment>
   </data>
   <data name="Shell_WebView.Content" xml:space="preserve">
     <value>WebView</value>
@@ -368,5 +324,47 @@
   </data>
   <data name="Authentication_ForgotPassword" xml:space="preserve">
     <value>Forgot password</value>
+  </data>
+  <data name="UserCenter.Title" xml:space="preserve">
+    <value>User Center</value>
+  </data>
+  <data name="UserCenter_Account.Header" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="UserCenter_Contribute.Header" xml:space="preserve">
+    <value>Contribute</value>
+  </data>
+  <data name="UserCenter_Favorites.Header" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="UserCenter_Personal.Header" xml:space="preserve">
+    <value>Personal</value>
+  </data>
+  <data name="UserCenter_Change.Content" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="UserCenter_Avatar.Text" xml:space="preserve">
+    <value>Avatar</value>
+  </data>
+  <data name="UserCenter_E-mail.Text" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
+  <data name="UserCenter_Password.Text" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="UserCenter_Username.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Current_Password.PlaceholderText" xml:space="preserve">
+    <value>Current password</value>
+  </data>
+  <data name="New_Password.PlaceholderText" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="UserCenter_Accept.Content" xml:space="preserve">
+    <value>I have determined.</value>
+  </data>
+  <data name="UserCenter_Logout.Text" xml:space="preserve">
+    <value>Log out your account</value>
   </data>
 </root>

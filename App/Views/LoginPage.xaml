@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:c="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Style="{StaticResource PageStyle}"
     DataContext="{Binding LoginViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
@@ -83,7 +84,7 @@
 
             <StackPanel
                 HorizontalAlignment="Center"
-                Orientation="Horizontal">
+                Orientation="Vertical">
                 <!--<Button
                     x:Uid="Authentication_SetUp"
                     Command="{Binding SetupHelloCommand}"
@@ -109,6 +110,6 @@
                 <HyperlinkButton x:Uid="Authentication_NotAccountSignUp"/>
             </StackPanel>
         </StackPanel>
-
+        <c:InAppNotification Name="Notification"/>
     </Grid>
 </Page>

@@ -10,8 +10,6 @@ namespace App.Views
     {
         public NavigationServiceEx NavigationService => ServiceLocator.Current.GetInstance<NavigationServiceEx>();
 
-        public OrangeService RestApiService => OrangeService.Current;
-
         public TitleBarHelper TitleHelper => TitleBarHelper.Instance;
 
         private ShellViewModel ViewModel

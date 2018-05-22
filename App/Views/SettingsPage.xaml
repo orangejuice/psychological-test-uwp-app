@@ -10,7 +10,7 @@
     mc:Ignorable="d">
 
     <Grid
-        Margin="{StaticResource MediumLeftRightMargin}"
+        Padding="{StaticResource MediumLeftRightMargin}"
         Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel
             x:Name="ContentArea">

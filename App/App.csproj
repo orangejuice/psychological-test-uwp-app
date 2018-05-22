@@ -138,6 +138,7 @@
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Helpers\TitleBarHelper.cs" />
     <Compile Include="Helpers\ViewHelper.cs" />
+    <Compile Include="Helpers\ViewModelConnHelper.cs" />
     <Compile Include="Models\Pagination.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Models\Scale.cs" />

@@ -46,8 +46,8 @@
                                     <ColumnDefinition Width="auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <PersonPicture Grid.Column="0" Width="20" Height="20" Margin="-2,0,14,0" HorizontalAlignment="Center" VerticalAlignment="Center" ProfilePicture="{x:Bind RestApiService.CurrentUser.avatar, Mode=OneWay}"/>
-                                <TextBlock Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource BodyTextStyle}" Text="{x:Bind RestApiService.CurrentUser.username, Mode=OneWay}" />
+                                <PersonPicture Grid.Column="0" Width="20" Height="20" Margin="-2,0,14,0" HorizontalAlignment="Center" VerticalAlignment="Center" ProfilePicture="{Binding OrangeService.CurrentUser.avatar, Mode=OneWay}"/>
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center" Style="{StaticResource BodyTextStyle}" Text="{Binding OrangeService.CurrentUser.username, Mode=OneWay}" />
                             </Grid>
                         </NavigationViewItem.Content>
                     </NavigationViewItem>
@@ -114,8 +114,6 @@
                 <Frame x:Name="shellFrame" />
             </Grid>
         </NavigationView>
-        
-        <controls:InAppNotification x:Name="InAppNotification" />
         
         <!--<TextBlock x:Name="windowTitle"
                    Style="{ThemeResource CaptionTextBlockStyle}"

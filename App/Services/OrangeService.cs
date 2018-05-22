@@ -35,7 +35,7 @@ namespace App.Services
         public static OrangeService Current => _instance ?? (_instance = new OrangeService());
 
         /// <summary>
-        /// Disconnects a service
+        /// Disconnects account
         /// </summary>
         public void LogoutService()
         {
@@ -146,8 +146,8 @@ namespace App.Services
                 }
 
                 // If we have a user object, return it
-                if (_currentUser != null)
-                    return _currentUser;
+                //if (_currentUser != null)
+                //    return _currentUser;
 
                 var request = new HttpRequestMessage(HttpMethod.Get, "/api/users/me/");
 
@@ -155,6 +155,7 @@ namespace App.Services
                 if (result.Success)
                 {
                     _currentUser = result.Data;
+
                     return _currentUser;
                 }
                 else
@@ -214,7 +215,10 @@ namespace App.Services
                 return result;
             }
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Token", Token.key);
+            if (Token != null)
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Token", Token.key);
+            }
 
             try
             {

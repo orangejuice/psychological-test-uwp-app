@@ -27,6 +27,8 @@ namespace App.ViewModels
 
         public NavigationServiceEx NavigationService => ServiceLocator.Current.GetInstance<NavigationServiceEx>();
 
+        public OrangeService OrangeService => OrangeService.Current;
+
         private Visibility _signInVisable;
 
         public Visibility SignInVisable { get => OrangeService.Current.IsAccountConnected ? Visibility.Collapsed : Visibility.Visible; }
@@ -46,6 +48,13 @@ namespace App.ViewModels
 
         public ShellViewModel()
         {
+            ViewModelConnHelper.OnMessageTransmitted += OnMessageTransmitted;
+        }
+
+        private void OnMessageTransmitted(string message)
+        {
+            if (message == "avatar_update" || message == "logout")
+                RaisePropertyChanged("OrangeService");
         }
 
         public void Initialize(Frame frame, NavigationView navigationView)

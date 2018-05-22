@@ -81,9 +81,7 @@ namespace App.Services
                 
                 if (pageKey == typeof(ViewModels.MainViewModel).FullName)
                 {
-                    Frame.BackStack.Clear();
-                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
-                    AppViewBackButtonVisibility.Collapsed;
+                    ClearBackStack();
                 }
 
                 return navigationResult;
@@ -92,6 +90,13 @@ namespace App.Services
             {
                 return false;
             }
+        }
+
+        public void ClearBackStack()
+        {
+            Frame.BackStack.Clear();
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
+            AppViewBackButtonVisibility.Collapsed;
         }
 
         public void Configure(string key, Type pageType)
