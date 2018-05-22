@@ -71,7 +71,7 @@ class ScaleRecordViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, views
         request.data['result'] = self.get_result(request.data['scale'], request.data['score'])
         request.data['chose'] = request.data['opts']
         request.data['user'] = request.user.pk
-        serializer = ScaleRecordAddSerializer(data=request.data, context={'request', request})
+        serializer = ScaleRecordAddSerializer(data=request.data, context={'request': request})
         serializer.is_valid()
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)

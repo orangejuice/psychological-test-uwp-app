@@ -31,3 +31,14 @@ class Article(models.Model):
 
     def __str__(self):
         return str(self.title)
+
+
+class ArticleFavorite(models.Model):
+    # 一个问题 -> 多个答案， 不同程度的对应不同的结果
+    post = models.ForeignKey(to=Article, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=UserProfile, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created']
+        db_table = 'post_favor'

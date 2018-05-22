@@ -4,7 +4,7 @@ from django_comments_xtd.api.serializers import ReadCommentSerializer
 from django_comments_xtd.models import XtdComment
 from rest_framework import serializers
 
-from post.models import Article, Category
+from post.models import Article, Category, ArticleFavorite
 from post.utils import GeoNotFoundException, get_ip_area
 from user.serializers import UserSerializer
 
@@ -30,13 +30,14 @@ class PostListSerializer(serializers.HyperlinkedModelSerializer):
 
 class PostDetailSerializer(serializers.HyperlinkedModelSerializer):
     author = UserSerializer(read_only=True)
+    favor = serializers.SerializerMethodField()
     cate_name = serializers.ReadOnlyField(source='cate.name')
     comments = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
 
     class Meta:
         model = Article
-        fields = ('url', 'title', 'cate', 'cate_name', 'thumbnail', 'author',
+        fields = ('url', 'title', 'cate', 'cate_name', 'thumbnail', 'author', 'favor',
                   'content', 'created', 'updated', 'comments', 'location')
 
     @staticmethod
@@ -57,8 +58,29 @@ class PostDetailSerializer(serializers.HyperlinkedModelSerializer):
         comments = CommentSerializer(qs, many=True, context=self.context).data
         return comments
 
+    def get_favor(self, obj):
+        user = self.context['request'].user.pk
+        qs = ArticleFavorite.objects.filter(post=obj.pk, user=user)
+        if qs is not None and qs.count() > 0:
+            return qs[0].created
+        return None
+
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Category
         fields = ('url', 'name', 'created')
+
+
+class ArticleFavoriteSerializer(serializers.ModelSerializer):
+    post = PostDetailSerializer(read_only=True)
+
+    class Meta:
+        model = ArticleFavorite
+        fields = ('user', 'post', 'created')
+
+
+class ArticleFavoriteAddSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ArticleFavorite
+        fields = ('user', 'post')

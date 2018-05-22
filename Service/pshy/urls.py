@@ -7,13 +7,14 @@ from rest_framework import routers
 
 from eval.views import ScaleViewSet, ScaleItemViewSet, ScaleOptionViewSet, ScaleConclusionViewSet, ScaleRecordViewSet, \
     ScaleResultViewSet
-from post.views import PostViewSet, CategoryViewSet
+from post.views import PostViewSet, CategoryViewSet, PostFavoriteViewSet
 from user.views import UserViewSet, GroupViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'users-group', GroupViewSet)
 router.register(r'posts', PostViewSet)
+router.register(r'posts-favor', PostFavoriteViewSet)
 router.register(r'posts-cate', CategoryViewSet)
 router.register(r'eval', ScaleViewSet)
 router.register(r'eval-item', ScaleItemViewSet)
