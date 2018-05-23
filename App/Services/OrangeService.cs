@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using App.Helpers;
 using App.Models;
@@ -22,12 +23,12 @@ namespace App.Services
         // Private class instance
         private static OrangeService _instance;
 
-        const string BaseHost = "http://127.0.0.1:8000/";
+        public static readonly string BaseHost = "http://127.0.0.1:8000/";
 
         private Token _Token;
         private User _currentUser;
 
-        public NavigationServiceEx NavigationService => ServiceLocator.Current.GetInstance<NavigationServiceEx>();
+        private NavigationServiceEx NavigationService => ServiceLocator.Current.GetInstance<NavigationServiceEx>();
 
         /// <summary>
         /// Get the current service
@@ -193,7 +194,7 @@ namespace App.Services
 
         #endregion
 
-        public async Task<RequestResult<T>> SendRequestAsync<T>(HttpRequestMessage request) where T : new()
+        public async Task<RequestResult<T>> SendRequestAsync<T>(HttpRequestMessage request)
         {
 
             var client = new HttpClient();
@@ -216,9 +217,7 @@ namespace App.Services
             }
 
             if (Token != null)
-            {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Token", Token.key);
-            }
 
             try
             {
@@ -227,7 +226,7 @@ namespace App.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     result.Success = false;
-                    result.Message = response.ReasonPhrase;
+                    result.Message = response.ReasonPhrase + ": " + response.Content?.ReadAsStringAsync().Result;
                     result.StatusCode = (int)response.StatusCode;
                 }
                 else
@@ -251,48 +250,51 @@ namespace App.Services
 
         public async Task<RequestResult<string>> SendRequestAsync(HttpRequestMessage request)
         {
-            var client = new HttpClient();
-            var result = new RequestResult<string>();
+            return await SendRequestAsync<string>(request);
 
-            if (request.RequestUri.IsAbsoluteUri)
-            {
-                client.BaseAddress = null;
-            }
-            else
-            {
-                client.BaseAddress = new Uri(BaseHost);
-            }
+            //var client = new HttpClient();
+            //var result = new RequestResult<string>();
 
-            if (request == null)
-            {
-                result.Success = false;
-                result.Message = "Request can't be null".GetLocalized();
-                return result;
-            }
+            //if (request.RequestUri.IsAbsoluteUri)
+            //{
+            //    client.BaseAddress = null;
+            //}
+            //else
+            //{
+            //    client.BaseAddress = new Uri(BaseHost);
+            //}
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Token", Token.key);
+            //if (request == null)
+            //{
+            //    result.Success = false;
+            //    result.Message = "Request can't be null".GetLocalized();
+            //    return result;
+            //}
 
-            Debug.WriteLine(request.Content.ReadAsStringAsync());
-            try
-            {
-                var response = await client.SendAsync(request);
+            //if (Token != null)
+            //    request.Headers.Authorization = new AuthenticationHeaderValue("Token", Token.key);
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    result.Success = false;
-                    result.Message = response.ReasonPhrase;
-                    result.StatusCode = (int)response.StatusCode;
-                }
-            }
-            catch (Exception e)
-            {
-                result.Success = false;
-                result.Message = e.Message;
-            }
-            return result;
+            //Debug.WriteLine(request.Content.ReadAsStringAsync());
+            //try
+            //{
+            //    var response = await client.SendAsync(request);
+
+            //    if (!response.IsSuccessStatusCode)
+            //    {
+            //        result.Success = false;
+            //        result.Message = response.ReasonPhrase + ": " + response.Content?.ReadAsStringAsync();
+            //        result.StatusCode = (int)response.StatusCode;
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    result.Success = false;
+            //    result.Message = e.Message;
+            //}
+            //return result;
         }
 
-        public async Task<RequestResult<string>> LoginAsync(string username, string password)
+        public async Task<RequestResult<Token>> LoginAsync(string username, string password)
         {
             //var client = new RestClient
             //{
@@ -305,84 +307,49 @@ namespace App.Services
             //var response = await client.ExecuteTaskAsync<Token>(request);
             //var result = new RequestResult<string>();
 
-            var client = new HttpClient();
-            var result = new RequestResult<string>();
-            client.BaseAddress = new Uri(BaseHost);
+            //var client = new HttpClient();
+            //var result = new RequestResult<string>();
+            //client.BaseAddress = new Uri(BaseHost);
 
-            var byteArray = Encoding.ASCII.GetBytes(username + ":" + password);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            //var byteArray = Encoding.ASCII.GetBytes(username + ":" + password);
+            //var h = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            //client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(byteArray));
 
-            HttpResponseMessage response = await client.PostAsync("api/auth/login/", null);
+            //HttpResponseMessage response = await client.PostAsync("api/auth/login/", null);
 
-            //==========================================
 
-            Debug.WriteLine(response.StatusCode);
+            var form = new MultipartFormDataContent();
 
-            if (!response.IsSuccessStatusCode)
+            //Judge if its an email address.
+            Regex r = new Regex("^\\s*([A-Za-z0-9_-]+(\\.\\w+)*@(\\w+\\.)+\\w{2,5})\\s*$");
+
+            if (r.IsMatch(username))
             {
-                result.Success = false;
-                result.Message = response.ReasonPhrase;
+                form.Add(new StringContent(username), "email");
             }
             else
             {
-                var json = response.Content.ReadAsStringAsync().Result;
-                var data = await Json.ToObjectAsync<Token>(json);
+                form.Add(new StringContent(username), "username");
+            }
 
-                if (response.StatusCode == HttpStatusCode.BadRequest || data.key == string.Empty)
-                {
-                    result.Success = false;
-                    result.Message = data.detail;
-                    result.StatusCode = (int)response.StatusCode;
-                }
-                else
-                {
-                    Debug.WriteLine(data.key);
+            form.Add(new StringContent(password), "password");
+            var request = new HttpRequestMessage(HttpMethod.Post, "/api/auth/login/");
+            request.Content = form;
 
-                    // Create the password vault
-                    var vault = new PasswordVault();
+            var result = await SendRequestAsync<Token>(request);
 
-                    // Store the values in the vault
-                    vault.Add(new PasswordCredential("pshy", "Token", data.key));
-                }
+            if (result.Success)
+            {
+                Debug.WriteLine(result.Data.key);
 
+                // Create the password vault
+                var vault = new PasswordVault();
+
+                // Store the values in the vault
+                vault.Add(new PasswordCredential("pshy", "Token", result.Data.key));
             }
 
             return result;
-
-            //if (response.ErrorException != null)
-            //{
-            //    result.Success = false;
-            //    string message = "Error retrieving response.".GetLocalized();
-            //    result.Message = response.ErrorMessage;
-            //    result.StatusCode = (int)response.StatusCode;
-            //    return result;
-            //}
-
-            //if (response.StatusCode != HttpStatusCode.OK)
-            //{
-            //    result.Success = false;
-            //    string message = "Error username or password.".GetLocalized();
-            //    result.Message = response.Data.detail;
-            //    result.StatusCode = (int)response.StatusCode;
-            //    return result;
-            //}
-
-            //if (response.Data.key == string.Empty)
-            //{
-            //    result.Success = false;
-            //    string message = "Login failed.".GetLocalized();
-            //    result.Message = response.Data.detail;
-            //    result.StatusCode = (int)response.StatusCode;
-            //    return result;
-            //}
-
-            //Debug.WriteLine(response.Data.key);
-            //// Create the password vault
-            //var vault = new PasswordVault();
-
-            //// Store the values in the vault
-            //vault.Add(new PasswordCredential("pshy", "Token", response.Data.key.ToString()));
-            //return result;
         }
 
         public class RequestResult<T>

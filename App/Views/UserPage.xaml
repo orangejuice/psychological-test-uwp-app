@@ -24,7 +24,48 @@
 
             </PivotItem>-->
             <PivotItem x:Uid="UserCenter_Favorites">
-                <TextBlock Text="flagged emails go here." />
+                <ListView 
+                    x:Name="PostsListView"
+                    ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
+                    ItemClick="PostsListView_ItemClick"
+                    IsItemClickEnabled="True"
+                    SelectionMode="None"
+                    animations:Implicit.ShowAnimations="{StaticResource DefaultListShowAnimations}"
+                    animations:Implicit.HideAnimations="{StaticResource DefaultListHideAnimations}"
+                    Margin="20,32,20,0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <RelativePanel Margin="5" Background="{ThemeResource SystemControlTransparentBrush}" Height="80">
+                                <Image Name="Thumbnail" RelativePanel.AlignVerticalCenterWithPanel="True" Stretch="UniformToFill" Height="70" Width="100" Source="{Binding post.thumbnail}"/>
+                                <TextBlock
+                                    Text="{Binding post.title}" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="20,0,0,0" TextTrimming="WordEllipsis"
+                                    RelativePanel.RightOf="Thumbnail"/>
+                                <TextBlock
+                                    Text="{Binding created, Converter={StaticResource DateTimeConverter}}" TextWrapping="NoWrap" Margin="2"
+                                    RelativePanel.AlignBottomWith="Thumbnail"
+                                    RelativePanel.AlignRightWithPanel="True"/>
+                                <PersonPicture
+                                    Name="Avatar"
+                                    Width="28"
+                                    Height="28"
+                                    Margin="20,0,0,0"
+                                    RelativePanel.RightOf="Thumbnail"
+                                    RelativePanel.AlignBottomWith="Thumbnail"
+                                    ProfilePicture="{Binding post.author.avatar}"/>
+                                <TextBlock
+                                    Name="Username"
+                                    Text="{Binding post.author.username}" Foreground="DarkGray" Margin="10,0,0,0"
+                                    RelativePanel.AlignBottomWith="Thumbnail"
+                                    RelativePanel.RightOf="Avatar"/>
+                            </RelativePanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
             </PivotItem>
             <PivotItem x:Uid="UserCenter_Account">
                 <StackPanel Orientation="Vertical">
@@ -47,9 +88,9 @@
                     <TextBlock VerticalAlignment="Bottom" x:Uid="UserCenter_Password" Style="{StaticResource ListTitleStyle}" Margin="0,30,0,10"/>
 
                     <!--<TextBlock VerticalAlignment="Bottom" Margin="0,0,10,0" Text="Current Password"/>-->
-                    <PasswordBox HorizontalAlignment="Left" BorderThickness="0,0,0,1" x:Uid="Current_Password" Width="200"/>
-                    <PasswordBox HorizontalAlignment="Left" BorderThickness="0,0,0,1" x:Uid="New_Password" Width="200"/>
-                    <PasswordBox HorizontalAlignment="Left" BorderThickness="0,0,0,1" x:Uid="New_Password" Width="200"/>
+                    <!--<PasswordBox Name="CPassword" HorizontalAlignment="Left" BorderThickness="0,0,0,1" x:Uid="Current_Password" Width="200"/>-->
+                    <PasswordBox Name="NPassword1" HorizontalAlignment="Left" BorderThickness="0,0,0,1" x:Uid="New_Password" Width="200"/>
+                    <PasswordBox Name="NPassword2" HorizontalAlignment="Left" BorderThickness="0,0,0,1" x:Uid="New_Password" Width="200"/>
                     <HyperlinkButton Margin="0,10,0,0" x:Uid="UserCenter_Change" Click="PasswordChange_Click"/>
 
                     <TextBlock VerticalAlignment="Bottom" x:Uid="UserCenter_Logout" Style="{StaticResource ListTitleStyle}" Margin="0,30,0,10"/>
@@ -58,5 +99,6 @@
             </PivotItem>
         </Pivot>
         <c:InAppNotification Name="Notification"/>
+        <ProgressBar VerticalAlignment="Bottom" Height="20" Visibility="{x:Bind ViewModel.Loading, Mode=OneWay}" ShowPaused="False" ShowError="False" IsIndeterminate="True"  />
     </Grid>
 </Page>

@@ -53,8 +53,12 @@ namespace App.ViewModels
 
         private void OnMessageTransmitted(string message)
         {
-            if (message == "avatar_update" || message == "logout")
+            if (message == "avatar_update" || message == "logout" || message == "login")
+            {
                 RaisePropertyChanged("OrangeService");
+                RaisePropertyChanged("SignInVisable");
+                RaisePropertyChanged("UserCenterVisable");
+            }
         }
 
         public void Initialize(Frame frame, NavigationView navigationView)

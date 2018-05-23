@@ -24,7 +24,7 @@ class PostListSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Article
-        fields = ('url', 'title', 'cate', 'cate_name', 'thumbnail', 'author',
+        fields = ('url', 'id', 'title', 'cate', 'cate_name', 'thumbnail', 'author',
                   'content', 'created', 'updated')
 
 
@@ -37,7 +37,7 @@ class PostDetailSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Article
-        fields = ('url', 'title', 'cate', 'cate_name', 'thumbnail', 'author', 'favor',
+        fields = ('url', 'id', 'title', 'cate', 'cate_name', 'thumbnail', 'author', 'favor',
                   'content', 'created', 'updated', 'comments', 'location')
 
     @staticmethod
@@ -62,8 +62,8 @@ class PostDetailSerializer(serializers.HyperlinkedModelSerializer):
         user = self.context['request'].user.pk
         qs = ArticleFavorite.objects.filter(post=obj.pk, user=user)
         if qs is not None and qs.count() > 0:
-            return qs[0].created
-        return None
+            return True
+        return False
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):

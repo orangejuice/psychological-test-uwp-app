@@ -74,7 +74,7 @@
             animations:Implicit.HideAnimations="{StaticResource DefaultHideAnimations}">
             <AppBarButton Icon="Edit" x:Uid="StartTest" Click="StartButton_Click"/>
             <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="Emoji2" Label="Nothing here, bzinga!"/>
+                <AppBarButton Icon="Emoji2" Label="Nothing here!"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Grid>

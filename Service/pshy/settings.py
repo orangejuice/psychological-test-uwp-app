@@ -67,13 +67,15 @@ EMAIL_HOST_USER = 'cherrymeteor@foxmail.com'
 EMAIL_HOST_PASSWORD = 'cwpyzjgvmtpcbfgf'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
-DEFAULT_FROM_EMAIL = '橘子心理<cherrymeteor@foxmail.com>'
+DEFAULT_FROM_EMAIL = '橘子心理<NoReply@orangejuce.cc>'
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 
 COMMENTS_APP = 'django_comments_xtd'
 COMMENTS_XTD_MAX_THREAD_LEVEL = 1
+
+# only allow the registered user to comment.
 COMMENTS_XTD_CONFIRM_EMAIL = False
 
 # LOGIN_REDIRECT_URL = '/'

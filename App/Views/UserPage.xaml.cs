@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using App.Helpers;
+using App.Models;
 using App.Services;
 using App.ViewModels;
 using CommonServiceLocator;
@@ -37,7 +38,7 @@ namespace App.Views
             FileOpenPicker openPicker = new FileOpenPicker();
 
             openPicker.ViewMode = PickerViewMode.Thumbnail;
-            //openPicker.ViewMode = PickerViewMode.List;  
+            //openPicker.ViewMode = PickerViewMode.List;
 
             openPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
 
@@ -72,9 +73,25 @@ namespace App.Views
             }
         }
 
-        private void PasswordChange_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void PasswordChange_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
+            var form = new MultipartFormDataContent();
+            form.Add(new StringContent(NPassword1.Password), "new_password1");
+            form.Add(new StringContent(NPassword2.Password), "new_password2");
+            var request = new HttpRequestMessage(HttpMethod.Post, "/api/auth/password/change/");
+            request.Content = form;
 
+            var result = await OrangeService.Current.SendRequestAsync(request);
+
+            if (result.Success)
+            {
+                Notification.Show("New Password has been effective, please re-login!", 3000);
+                Logout_Click(null, null);
+            }
+            else
+            {
+                Notification.Show(result.Message, 3000);
+            }
         }
 
         private void Logout_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -83,7 +100,13 @@ namespace App.Views
             NavigationService.ClearBackStack();
             NavigationService.Navigate(typeof(MainViewModel).FullName);
             ViewModelConnHelper.BroadCast("logout");
+        }
 
+        private void PostsListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var postfavor = e.ClickedItem as PostFavor;
+         
+            NavigationService.Navigate(typeof(PostDetailViewModel).FullName, postfavor.post);
         }
     }
 }

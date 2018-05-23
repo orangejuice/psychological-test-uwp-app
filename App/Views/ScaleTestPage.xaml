@@ -100,6 +100,9 @@
             <AppBarButton Icon="Back" x:Uid="Previous" IsEnabled="{x:Bind ViewModel.Previous, Mode=OneWay}" Click="PreviousButton_Click"/>
             <AppBarButton Icon="Forward" x:Uid="Next" IsEnabled="{x:Bind ViewModel.Next, Mode=OneWay}" Click="NextButton_Click"/>
             <AppBarButton Icon="Accept" x:Uid="Finish" IsEnabled="{x:Bind ViewModel.Complete, Mode=OneWay}" Click="StopButton_Click"/>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="Emoji2" Label="Nothing here!"/>
+            </CommandBar.SecondaryCommands>
         </CommandBar>
     </Grid>
 </Page>

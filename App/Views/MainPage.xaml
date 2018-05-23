@@ -67,21 +67,34 @@
                 <ListView.Header>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <Rectangle Fill="LightGray" Width="10" Margin="0,0,10,0" />
-                        <TextBlock Style="{StaticResource PageTitleStyle}" x:Uid="News"/>
+                        <TextBlock Style="{StaticResource PageTitleStyle}" x:Uid="NewsTop"/>
                     </StackPanel>
                 </ListView.Header>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="5" Background="{ThemeResource SystemControlTransparentBrush}" Height="44">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="6*"></ColumnDefinition>
-                                <ColumnDefinition Width="2*"></ColumnDefinition>
-                                <ColumnDefinition Width="2*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding title}" Grid.Column="0" Margin="2" TextTrimming="WordEllipsis"/>
-                            <TextBlock Text="{Binding created, Converter={StaticResource DateTimeConverter}}" Grid.Column="2" TextWrapping="NoWrap" Margin="2"/>
-                            <TextBlock Text="{Binding author.username}" Grid.Column="1" Margin="2" Foreground="DarkGray"/>
-                        </Grid>
+                        <RelativePanel Margin="5"  Background="{ThemeResource SystemControlTransparentBrush}" Height="80">
+                            <Image Name="Thumbnail" RelativePanel.AlignVerticalCenterWithPanel="True" Stretch="UniformToFill" Height="70" Width="100" Source="{Binding thumbnail}"/>
+                            <TextBlock
+                                Text="{Binding title}" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="20,0,0,0" TextTrimming="WordEllipsis"
+                                RelativePanel.RightOf="Thumbnail"/>
+                            <TextBlock
+                                Text="{Binding created, Converter={StaticResource DateTimeConverter}}"  Grid.Column="2" TextWrapping="NoWrap" Margin="2"
+                                RelativePanel.AlignBottomWith="Thumbnail"
+                                RelativePanel.AlignRightWithPanel="True"/>
+                            <PersonPicture
+                                Name="Avatar"
+                                Width="28"
+                                Height="28"
+                                Margin="20,0,0,0"
+                                RelativePanel.RightOf="Thumbnail"
+                                RelativePanel.AlignBottomWith="Thumbnail"
+                                ProfilePicture="{Binding author.avatar, Mode=OneWay}"/>
+                            <TextBlock
+                                Name="Username"
+                                Text="{Binding author.username}" Foreground="DarkGray" Margin="10,0,0,0"
+                                RelativePanel.AlignBottomWith="Thumbnail"
+                                RelativePanel.RightOf="Avatar"/>
+                        </RelativePanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 <ListView.ItemContainerStyle>

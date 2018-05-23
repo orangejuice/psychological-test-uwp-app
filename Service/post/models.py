@@ -27,7 +27,7 @@ class Article(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-is_top', '-updated']
+        ordering = ['-created']
 
     def __str__(self):
         return str(self.title)

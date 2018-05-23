@@ -15,22 +15,52 @@
     <Grid
         x:Name="ContentArea"
         Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
         <ScrollViewer
             Margin="20,35,0,20"
             HorizontalScrollBarVisibility="Disabled"
             VerticalScrollBarVisibility="Visible">
-            <c:MarkdownTextBlock
-                Name="MarkdownText"
-                Margin="6"
-                Height="auto"
-                Header1Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
-                LinkForeground="Firebrick"
-                Text="{x:Bind ViewModel.CurrentPost.content}"
-                RequestedTheme="Default"
-                animations:Implicit.ShowAnimations="{StaticResource DefaultShowAnimations}"
-                animations:Implicit.HideAnimations="{StaticResource DefaultHideAnimations}"/>
+            <StackPanel Orientation="Vertical">
+                <c:MarkdownTextBlock
+                    Name="MarkdownText"
+                    Margin="6"
+                    Height="auto"
+                    Header1Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                    LinkForeground="Firebrick"
+                    Text="{x:Bind ViewModel.CurrentPost.content}"
+                    animations:Implicit.ShowAnimations="{StaticResource DefaultShowAnimations}"
+                    animations:Implicit.HideAnimations="{StaticResource DefaultHideAnimations}"/>
+            </StackPanel>
         </ScrollViewer>
-
+        <CommandBar
+            Name="PostCommandBar"
+            Grid.Row="1"
+            Background="{StaticResource SystemControlAcrylicElementBrush}"
+            IsOpen="False" DefaultLabelPosition="Right"
+            VerticalAlignment="Bottom"
+            animations:Implicit.ShowAnimations="{StaticResource DefaultShowAnimations}"
+            animations:Implicit.HideAnimations="{StaticResource DefaultHideAnimations}">
+            <AppBarButton
+                Name="AddFavoriteButton"
+                x:Uid="Post_Favorite_Add"
+                Icon="OutlineStar"
+                Visibility="{x:Bind ViewModel.AddFavoriteVisable, Mode=OneWay}"
+                Click="Favorite_Click"/>
+            <AppBarButton
+                Name="CalFavoriteButton"
+                x:Uid="Post_Favorite_Cancel"
+                Icon="Favorite"
+                Visibility="{x:Bind ViewModel.CalFavoriteVisable, Mode=OneWay}"
+                Foreground="Orange"
+                Click="Favorite_Click"/>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="Emoji2" Label="Nothing here!"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+        <c:InAppNotification Name="Notification"/>
     </Grid>
 
     <!--<Page.Resources>

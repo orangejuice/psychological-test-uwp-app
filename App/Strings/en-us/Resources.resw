@@ -244,8 +244,8 @@
     <value>Post</value>
     <comment>Navigation view item name for Post</comment>
   </data>
-  <data name="News.Text" xml:space="preserve">
-    <value>News</value>
+  <data name="NewsTop.Text" xml:space="preserve">
+    <value>Top News</value>
   </data>
   <data name="Today" xml:space="preserve">
     <value>Today</value>
@@ -308,7 +308,7 @@
     <value>password</value>
   </data>
   <data name="Authentication_Username.PlaceholderText" xml:space="preserve">
-    <value>username</value>
+    <value>username or email</value>
   </data>
   <data name="Authentication_NotAccount.Text" xml:space="preserve">
     <value>Don't have an account?</value>
@@ -322,7 +322,7 @@
   <data name="Authentication_Login.Text" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="Authentication_ForgotPassword" xml:space="preserve">
+  <data name="Authentication_ForgotPassword.Content" xml:space="preserve">
     <value>Forgot password</value>
   </data>
   <data name="UserCenter.Title" xml:space="preserve">
@@ -366,5 +366,11 @@
   </data>
   <data name="UserCenter_Logout.Text" xml:space="preserve">
     <value>Log out your account</value>
+  </data>
+  <data name="Post_Favorite_Add.Label" xml:space="preserve">
+    <value>Add Favorite</value>
+  </data>
+  <data name="Post_Favorite_Cancel.Label" xml:space="preserve">
+    <value>Cancel Favorite</value>
   </data>
 </root>

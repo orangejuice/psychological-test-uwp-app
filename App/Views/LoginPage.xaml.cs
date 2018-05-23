@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Net.Http;
+using System.Text.RegularExpressions;
+using App.Helpers;
 using App.Services;
 using App.ViewModels;
 using CommonServiceLocator;
@@ -26,14 +29,16 @@ namespace App.Views
 
         private async void LoginActionAsync(object sender, RoutedEventArgs e)
         {
+
             var result = await OrangeService.Current.LoginAsync(ViewModel.Username, ViewModel.Password);
             if (result.Success)
             {
-                NavigationService.Navigate("App.ViewModels.MainViewModel");
+                NavigationService.Navigate(typeof(MainViewModel).FullName);
+                ViewModelConnHelper.BroadCast("login");
             }
             else
             {
-                Notification.Show(result.Message, 5000);
+                Notification.Show(result.Message, 3000);
                 //ViewModel.StatusText = result.Message;
                 //ViewModel.StatusVisable = Visibility.Visible;
             }
@@ -47,5 +52,14 @@ namespace App.Views
             }
         }
 
+        private void ForgetPassword_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(OrangeService.BaseHost + "accounts/password/reset/");
+        }
+
+        private void SignUp_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(OrangeService.BaseHost + "accounts/signup/");
+        }
     }
 }

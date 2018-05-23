@@ -35,7 +35,6 @@ namespace App.ViewModels
             }
             Thumbnail = images;
 
-
             CarouselSelected = 1;
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(4000);
@@ -60,7 +59,7 @@ namespace App.ViewModels
             get
             {
                 var posts = new Pagination<Post>();
-                var request = new HttpRequestMessage(HttpMethod.Get, "/api/posts/");
+                var request = new HttpRequestMessage(HttpMethod.Get, "/api/posts/?isTop=1");
                 var result = AsyncHelper.RunSync(async () => await OrangeService.Current.SendRequestAsync<Pagination<Post>>(request));
                 if (result.Success)
                 {

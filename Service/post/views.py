@@ -11,7 +11,9 @@ class PostViewSet(viewsets.GenericViewSet):
     queryset = Article.objects.all()
 
     def list(self, request):
-        queryset = Article.objects.all()
+        order = request.query_params.get('isTop')
+        queryset = Article.objects.all() if order is None \
+            else Article.objects.filter(is_top=1)
 
         page = self.paginate_queryset(queryset)
         if page is not None:
