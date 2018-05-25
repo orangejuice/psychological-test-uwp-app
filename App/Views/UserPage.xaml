@@ -24,27 +24,33 @@
 
             </PivotItem>-->
             <PivotItem x:Uid="UserCenter_Favorites">
-                <ListView 
-                    x:Name="PostsListView"
-                    ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
-                    ItemClick="PostsListView_ItemClick"
-                    IsItemClickEnabled="True"
-                    SelectionMode="None"
-                    animations:Implicit.ShowAnimations="{StaticResource DefaultListShowAnimations}"
-                    animations:Implicit.HideAnimations="{StaticResource DefaultListHideAnimations}"
-                    Margin="20,32,20,0">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <RelativePanel Margin="5" Background="{ThemeResource SystemControlTransparentBrush}" Height="80">
-                                <Image Name="Thumbnail" RelativePanel.AlignVerticalCenterWithPanel="True" Stretch="UniformToFill" Height="70" Width="100" Source="{Binding post.thumbnail}"/>
-                                <TextBlock
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+                    <ListView 
+                        x:Name="PostsListView"
+                        ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}"
+                        ItemClick="PostsListView_ItemClick"
+                        IsItemClickEnabled="True"
+                        SelectionMode="None"
+                        animations:Implicit.ShowAnimations="{StaticResource DefaultListShowAnimations}"
+                        animations:Implicit.HideAnimations="{StaticResource DefaultListHideAnimations}"
+                        Margin="20,32,20,0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <RelativePanel Margin="5" Background="{ThemeResource SystemControlTransparentBrush}" Height="80">
+                                    <Image Name="Thumbnail" RelativePanel.AlignVerticalCenterWithPanel="True" Stretch="UniformToFill" Height="70" Width="100" Source="{Binding post.thumbnail}"/>
+                                    <TextBlock
                                     Text="{Binding post.title}" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="20,0,0,0" TextTrimming="WordEllipsis"
                                     RelativePanel.RightOf="Thumbnail"/>
-                                <TextBlock
+                                    <TextBlock
                                     Text="{Binding created, Converter={StaticResource DateTimeConverter}}" TextWrapping="NoWrap" Margin="2"
                                     RelativePanel.AlignBottomWith="Thumbnail"
                                     RelativePanel.AlignRightWithPanel="True"/>
-                                <PersonPicture
+                                    <PersonPicture
                                     Name="Avatar"
                                     Width="28"
                                     Height="28"
@@ -52,20 +58,22 @@
                                     RelativePanel.RightOf="Thumbnail"
                                     RelativePanel.AlignBottomWith="Thumbnail"
                                     ProfilePicture="{Binding post.author.avatar}"/>
-                                <TextBlock
+                                    <TextBlock
                                     Name="Username"
                                     Text="{Binding post.author.username}" Foreground="DarkGray" Margin="10,0,0,0"
                                     RelativePanel.AlignBottomWith="Thumbnail"
                                     RelativePanel.RightOf="Avatar"/>
-                            </RelativePanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                </ListView>
+                                </RelativePanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                    <ProgressBar Grid.Row="1" Height="20" Visibility="{x:Bind ViewModel.Loading, Mode=OneWay}" ShowPaused="False" ShowError="False" IsIndeterminate="True"  />
+                </Grid>
             </PivotItem>
             <PivotItem x:Uid="UserCenter_Account">
                 <StackPanel Orientation="Vertical">

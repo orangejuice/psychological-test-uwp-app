@@ -58,7 +58,10 @@ namespace App.ViewModels
             if (message == "avatar_update")
                 RaisePropertyChanged("OrangeService");
             if (message == "favorite_update")
-                RaisePropertyChanged();
+            {
+                AsyncHelper.RunSync(async () => await LoadAsync());
+                RaisePropertyChanged("Items");
+            }
         }
 
         private Visibility _loading = Visibility.Collapsed;

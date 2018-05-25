@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'mdeditor',
     # 'allauth.socialaccount.providers.weibo',
     # 'allauth.socialaccount.providers.weixin',
 ]
@@ -85,7 +86,7 @@ SITE_ID = 1
 
 AUTH_USER_MODEL = 'user.UserProfile'
 
-# STATIC_ROOT = os.path.join(BASE_DIR, )
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
 MEDIA_URL = '/images/'
@@ -93,12 +94,20 @@ MEDIA_URL = '/images/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
 # List of finder classes that know how to find static files in
 # various locations.
 # STATICFILES_FINDERS = (
 #     'django.contrib.staticfiles.finders.FileSystemFinder',
 #     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 # )
+
+COMMENTS_XTD_APP_MODEL_OPTIONS = {
+    'default': {
+        'allow_flagging': True,
+        'allow_feedback': True,
+    }
+}
 
 REST_FRAMEWORK = {
     'PAGE_SIZE': 10,

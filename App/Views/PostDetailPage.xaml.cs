@@ -43,8 +43,6 @@ namespace App.Views
 
             // cancel the webview scrollbar.
             var x = await webView.InvokeScriptAsync("eval", new[] { "document.body.style.overflow = 'hidden';" });
-
-            CommentView.Navigate(args.Uri);
         }
 
         private void CommentView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)

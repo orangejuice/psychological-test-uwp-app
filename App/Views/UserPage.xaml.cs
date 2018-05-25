@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -107,6 +108,23 @@ namespace App.Views
             var postfavor = e.ClickedItem as PostFavor;
          
             NavigationService.Navigate(typeof(PostDetailViewModel).FullName, postfavor.post);
+        }
+
+        private void OnViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            if (e.IsIntermediate)
+            {
+                var ScrollViewer = PostsListView.ChildrenBreadthFirst().OfType<ScrollViewer>().First();
+
+                var verticalOffset = ScrollViewer.VerticalOffset;
+                var maxVerticalOffset = ScrollViewer.ScrollableHeight; //sv.ExtentHeight - sv.ViewportHeight;
+
+                if (maxVerticalOffset < 0 || verticalOffset == maxVerticalOffset)
+                {
+                    Debug.WriteLine("Scrolled to bottom");
+                    Task t = ViewModel.LoadAsync(false);
+                }
+            }
         }
     }
 }

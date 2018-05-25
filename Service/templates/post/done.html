@@ -1,0 +1,18 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Submit sucess" %}{% endblock %}
+
+{% block content %}
+    <h1>{% trans "Submit sucess" %}</h1>
+
+{% endblock %}
+
+{% block extra_body %}
+    <script> $(function () {
+        setTimeout(function () {
+            window.location.href = "{% url 'post_new' %}";
+        }, 3000);
+    });  </script>
+{% endblock %}

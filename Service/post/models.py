@@ -20,7 +20,7 @@ class Article(models.Model):
     cate = models.ForeignKey(Category, on_delete=models.CASCADE)
     author = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING)
     content = models.TextField(max_length=5000, blank=False, null=False)
-    thumbnail = models.ImageField(null=True, blank=True, default=None, upload_to='thumb')
+    thumbnail = models.ImageField(null=True, blank=True, default='thumb/default.jpg', upload_to='thumb')
     ip_address = models.GenericIPAddressField(unpack_ipv4=True, blank=True, null=True)
     is_top = models.BooleanField('置顶', default=False)
     allow_comments = models.BooleanField('允许评论', default=True)

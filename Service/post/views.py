@@ -1,10 +1,16 @@
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, resolve_url
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView, DetailView
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
+from post.form import AttributeForm
 from post.models import Article, Category, ArticleFavorite
 from post.serializers import PostListSerializer, CategorySerializer, PostDetailSerializer, ArticleFavoriteSerializer, \
     ArticleFavoriteAddSerializer
@@ -85,4 +91,30 @@ class PostView(DetailView):
         context = super(PostView, self).get_context_data(**kwargs)
         # context.update({'next': reverse('comments-xtd-sent')})
         context.update({'next': reverse('post_comment', args=[kwargs['object'].pk])})
+        return context
+
+
+@csrf_protect
+@require_POST
+@login_required
+def post_new(request):
+    data = request.POST.copy()
+    data.author = request.user
+    data.ip_address = request.META.get("REMOTE_ADDR", None)
+    form = AttributeForm(request.POST)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(request, resolve_url('post_success'))
+
+
+def post_success(request):
+    return render(request, 'post/done.html')
+
+
+class PostEditorView(TemplateView):
+    template_name = 'post/new.html'
+    form = AttributeForm()
+
+    def get_context_data(self, **kwargs):
+        context = {'form': self.form, 'title': 'Post Form'}
         return context

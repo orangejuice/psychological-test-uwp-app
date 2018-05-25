@@ -1,0 +1,38 @@
+{% extends "post/base.html" %}
+{% load i18n %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}
+    <style>
+        p {
+            margin: 20px 60px;
+        }
+
+        p input, select {
+            width: 20em;
+        }
+        p label{
+            width: 5em;
+        }
+        input[type='file'] {
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h5 class="text-center">{% trans "New Post" %}</h5>
+    <form class="form" method="post" action="{% url 'post_new' %}">
+        {% csrf_token %}
+        {{ form.media }}
+        {{ form.as_p }}
+        <p class="submit text-right">
+            <input type="submit" name="post" class="submit-post" value="{% trans "Post" %}"/>
+        </p>
+    </form>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $('form [name="title"]').attr({'placeholder': 'Post Title'});
+    </script>
+{% endblock %}
