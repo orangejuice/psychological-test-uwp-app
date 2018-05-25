@@ -57,6 +57,8 @@ namespace App.ViewModels
         {
             if (message == "avatar_update")
                 RaisePropertyChanged("OrangeService");
+            if (message == "favorite_update")
+                RaisePropertyChanged();
         }
 
         private Visibility _loading = Visibility.Collapsed;

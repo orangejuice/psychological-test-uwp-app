@@ -58,6 +58,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
+    'user.backends.TokenAuthenticationBackend',
 )
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -73,9 +74,9 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 
 COMMENTS_APP = 'django_comments_xtd'
-COMMENTS_XTD_MAX_THREAD_LEVEL = 1
+COMMENTS_XTD_MAX_THREAD_LEVEL = 0
 
-# only allow the registered user to comment.
+# only allow the registered user to comment
 COMMENTS_XTD_CONFIRM_EMAIL = False
 
 # LOGIN_REDIRECT_URL = '/'
@@ -106,8 +107,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     )
 }
@@ -120,6 +121,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'user.middleware.TokenAuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'pshy.urls'
@@ -175,8 +177,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-# LANGUAGE_CODE = 'en-us'
-LANGUAGE_CODE = 'zh-CN'
+LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'zh-CN'
 
 # TIME_ZONE = 'UTC'
 TIME_ZONE = 'Asia/Shanghai'

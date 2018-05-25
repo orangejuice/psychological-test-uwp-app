@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -23,7 +24,8 @@ namespace App.Services
         // Private class instance
         private static OrangeService _instance;
 
-        public static readonly string BaseHost = "http://127.0.0.1:8000/";
+        public static readonly string Domain = "127.0.0.1";
+        public static readonly string BaseHost = "http://" + Domain + ":8000/";
 
         private Token _Token;
         private User _currentUser;
@@ -63,15 +65,23 @@ namespace App.Services
 
                 try
                 {
-                    // Get soundcloud recources
-                    var soundCloudResource = vault.FindAllByResource("pshy").FirstOrDefault();
+                    // Get recources
+                    var resourece = vault.FindAllByResource("pshy").FirstOrDefault();
 
                     // If this resource does not exist, return false
-                    if (soundCloudResource == null)
+                    if (resourece == null)
                         return false;
 
                     // Get the token
                     var tokenValue = vault.Retrieve("pshy", "Token").Password;
+
+                    // There are logined user
+                    var cookie = new Windows.Web.Http.HttpCookie("Authorization", Domain, "/");
+                    cookie.Value = "Token " + tokenValue;
+
+                    var filter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter();
+                    Windows.Web.Http.HttpCookieManager cookieManager = filter.CookieManager;
+                    cookieManager.SetCookie(cookie, false);
 
                     // return true if the token exists
                     return !string.IsNullOrEmpty(tokenValue);
@@ -104,13 +114,13 @@ namespace App.Services
                 try
                 {
                     // Get recources
-                    var soundCloudResource = vault.FindAllByResource("pshy").FirstOrDefault();
+                    var resource = vault.FindAllByResource("pshy").FirstOrDefault();
 
                     // If this resource does not exist, return false
-                    if (soundCloudResource == null)
+                    if (resource == null)
                         return null;
 
-                    // Get the soundcloud vault items
+                    // Get the vault items
                     var token = vault.Retrieve("pshy", "Token").Password;
 
                     // Create a new token class
@@ -124,6 +134,58 @@ namespace App.Services
 
                     // Return the newly created token
                     return tokenHolder;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
+
+        private NameValueCollection _credentials;
+        /// <summary>
+        /// Get the token needed to access soundcloud resources
+        /// </summary>
+        public NameValueCollection Credentials
+        {
+            get
+            {
+                // If we already have the token, return it
+                if (_credentials != null)
+                    return _credentials;
+
+                // Perform a check to see if we are logged in
+                if (!IsAccountConnected)
+                    return null;
+
+                // Get the password vault
+                var vault = new PasswordVault();
+
+                try
+                {
+                    // Get recources
+                    var resource = vault.FindAllByResource("pshy").FirstOrDefault();
+
+                    // If this resource does not exist, return false
+                    if (resource == null)
+                        return null;
+
+                    // Get the vault items
+                    var username = vault.Retrieve("pshy", "username").Password;
+                    var password = vault.Retrieve("pshy", "password").Password;
+
+                    // Create a new token class
+                    var credentialsHolder = new NameValueCollection
+                    {
+                        { "username", username},
+                        { "password", password}
+                    };
+
+                    // Set the private token
+                    _credentials = credentialsHolder;
+
+                    // Return the newly created token
+                    return credentialsHolder;
                 }
                 catch (Exception)
                 {
@@ -194,7 +256,7 @@ namespace App.Services
 
         #endregion
 
-        public async Task<RequestResult<T>> SendRequestAsync<T>(HttpRequestMessage request)
+        public async Task<RequestResult<T>> SendRequestAsync<T>(HttpRequestMessage request, bool ignoreFeedBack = false)
         {
 
             var client = new HttpClient();
@@ -232,10 +294,13 @@ namespace App.Services
                 else
                 {
                     var json = response.Content.ReadAsStringAsync().Result;
-                    var data = await Json.ToObjectAsync<T>(json);
-
                     Debug.WriteLine(json);
-                    result.Data = data;
+
+                    if (!ignoreFeedBack)
+                    {
+                        var data = await Json.ToObjectAsync<T>(json);
+                        result.Data = data;
+                    }
                 }
 
             }
@@ -250,7 +315,7 @@ namespace App.Services
 
         public async Task<RequestResult<string>> SendRequestAsync(HttpRequestMessage request)
         {
-            return await SendRequestAsync<string>(request);
+            return await SendRequestAsync<string>(request, true);
 
             //var client = new HttpClient();
             //var result = new RequestResult<string>();
@@ -346,6 +411,9 @@ namespace App.Services
                 var vault = new PasswordVault();
 
                 // Store the values in the vault
+                vault.Add(new PasswordCredential("pshy", "username", username));
+                vault.Add(new PasswordCredential("pshy", "password", password));
+
                 vault.Add(new PasswordCredential("pshy", "Token", result.Data.key));
             }
 

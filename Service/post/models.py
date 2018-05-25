@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from user.models import UserProfile
 
@@ -31,6 +32,9 @@ class Article(models.Model):
 
     def __str__(self):
         return str(self.title)
+
+    def get_absolute_url(self):
+        return reverse('post_comment', args=[self.pk])
 
 
 class ArticleFavorite(models.Model):

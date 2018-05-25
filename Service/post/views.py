@@ -1,6 +1,9 @@
+from django.urls import reverse
+from django.views.generic import TemplateView, DetailView
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
+from rest_framework.views import APIView
 
 from post.models import Article, Category, ArticleFavorite
 from post.serializers import PostListSerializer, CategorySerializer, PostDetailSerializer, ArticleFavoriteSerializer, \
@@ -72,3 +75,14 @@ class PostFavoriteViewSet(viewsets.GenericViewSet):
             return {'Location': str(data[api_settings.URL_FIELD_NAME])}
         except (TypeError, KeyError):
             return {}
+
+
+class PostView(DetailView):
+    model = Article
+    template_name = 'post/comment.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(PostView, self).get_context_data(**kwargs)
+        # context.update({'next': reverse('comments-xtd-sent')})
+        context.update({'next': reverse('post_comment', args=[kwargs['object'].pk])})
+        return context
