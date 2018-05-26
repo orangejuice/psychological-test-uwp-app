@@ -36,7 +36,6 @@ namespace App.ViewModels
             }
         }
 
-
         public async Task LoadFavoritesAsync(bool initialize = true)
         {
             Loading = Visibility.Visible;

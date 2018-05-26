@@ -10,6 +10,7 @@ using App.Services;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using Windows.UI.Popups;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
 namespace App.ViewModels
@@ -167,7 +168,7 @@ namespace App.ViewModels
         public int curr { get; set; }
 
         protected NavigationServiceEx NavigationService => ServiceLocator.Current.GetInstance<NavigationServiceEx>();
-
+        
         private Scale _currentScale;
         public Scale CurrentScale { get => _currentScale; set => Set(ref (_currentScale), value); }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using App.Helpers;
 using App.Services;
 using App.ViewModels;
 using CommonServiceLocator;
@@ -23,8 +24,14 @@ namespace App.Views
 
         private void StartButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            NavigationService.Navigate(typeof(ScaleTestViewModel).FullName, ViewModel.CurrentScale);
+            if (OrangeService.Current.IsAccountConnected)
+            {
+                NavigationService.Navigate(typeof(ScaleTestViewModel).FullName, ViewModel.CurrentScale);
+            }
+            else
+            {
+                Notify.Show("SclaeTest_NeedLogin".GetLocalized(), 3000);
+            }
         }
-
     }
 }

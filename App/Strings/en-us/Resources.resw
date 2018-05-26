@@ -373,4 +373,11 @@
   <data name="Post_Favorite_Cancel.Label" xml:space="preserve">
     <value>Cancel Favorite</value>
   </data>
+  <data name="Shell_ConnWrong.Content" xml:space="preserve">
+    <value>ConnWrong</value>
+    <comment>Navigation view item name for ConnWrong</comment>
+  </data>
+  <data name="SclaeTest_NeedLogin" xml:space="preserve">
+    <value>Request for testing error, make sure you are logged in.</value>
+  </data>
 </root>

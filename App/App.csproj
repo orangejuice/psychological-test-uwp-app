@@ -150,6 +150,7 @@
     <Compile Include="Services\NavigationServiceEx.cs" />
     <Compile Include="Services\OrangeService.cs" />
     <Compile Include="Services\ThemeSelectorService.cs" />
+    <Compile Include="ViewModels\ConnWrongViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PostViewModel.cs" />
@@ -161,6 +162,9 @@
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="ViewModels\PostDetailViewModel.cs" />
+    <Compile Include="Views\ConnWrongPage.xaml.cs">
+      <DependentUpon>ConnWrongPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -232,6 +236,10 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
+    <Page Include="Views\ConnWrongPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\LoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -302,6 +310,23 @@
     <Content Include="Assets\Carousel\tZrrWkQT9MM.jpg" />
     <Content Include="Assets\Carousel\V21dkuL8dnM.jpg" />
     <Content Include="Assets\Carousel\YvYBOSiBJE8.jpg" />
+    <Content Include="Assets\Game\assets\default_100_percent\100-disabled.png" />
+    <Content Include="Assets\Game\assets\default_100_percent\100-error-offline.png" />
+    <Content Include="Assets\Game\assets\default_100_percent\100-offline-sprite.png" />
+    <Content Include="Assets\Game\assets\default_200_percent\200-disabled.png" />
+    <Content Include="Assets\Game\assets\default_200_percent\200-error-offline.png" />
+    <Content Include="Assets\Game\assets\default_200_percent\200-offline-sprite.png" />
+    <Content Include="Assets\Game\assets\hello-kugou.gif" />
+    <Content Include="Assets\Game\assets\kumamon-runner.gif" />
+    <Content Include="Assets\Game\assets\novas-coisas.gif" />
+    <Content Include="Assets\Game\assets\offline-sprite-1x.png" />
+    <Content Include="Assets\Game\assets\offline-sprite-2x.png" />
+    <Content Include="Assets\Game\assets\screenshot.gif" />
+    <Content Include="Assets\Game\assets\t-rex-runner-19janil.gif" />
+    <Content Include="Assets\Game\assets\t-rex-runner-bot.gif" />
+    <Content Include="Assets\Game\index.css" />
+    <Content Include="Assets\Game\index.html" />
+    <Content Include="Assets\Game\index.js" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />

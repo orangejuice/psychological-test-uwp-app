@@ -36,7 +36,7 @@ namespace App.ViewModels
         private Visibility _userCenterVisable;
 
         public Visibility UserCenterVisable { get => OrangeService.Current.IsAccountConnected ? Visibility.Visible : Visibility.Collapsed; }
-
+        
         public NavigationViewItem Selected
         {
             get { return _selected; }
@@ -45,12 +45,11 @@ namespace App.ViewModels
 
         public ICommand ItemInvokedCommand => _itemInvokedCommand ?? (_itemInvokedCommand = new RelayCommand<NavigationViewItemInvokedEventArgs>(OnItemInvoked));
 
-
         public ShellViewModel()
         {
             ViewModelConnHelper.OnMessageTransmitted += OnMessageTransmitted;
         }
-
+        
         private void OnMessageTransmitted(string message)
         {
             if (message == "avatar_update" || message == "logout" || message == "login")
@@ -70,7 +69,6 @@ namespace App.ViewModels
 
         private void OnItemInvoked(NavigationViewItemInvokedEventArgs args)
         {
-
             if (args.IsSettingsInvoked)
             {
                 NavigationService.Navigate(typeof(SettingsViewModel).FullName);

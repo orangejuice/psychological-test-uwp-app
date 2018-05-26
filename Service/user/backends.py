@@ -1,6 +1,7 @@
+from django.contrib.auth.backends import ModelBackend
 
 
-class TokenAuthenticationBackend:
+class TokenAuthenticationBackend(ModelBackend):
     keyword = 'Token'
     model = None
 

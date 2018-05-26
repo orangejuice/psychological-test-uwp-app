@@ -55,8 +55,6 @@ namespace App.Services
         public bool Navigate(string pageKey, object parameter = null, NavigationTransitionInfo infoOverride = null)
         {
             Type page;
-            
-            // TODO Update the UI depending if we are logged in or not
 
             if (OrangeService.Current.IsAccountConnected)
                 Debug.WriteLine("login");

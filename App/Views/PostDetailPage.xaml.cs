@@ -45,6 +45,7 @@ namespace App.Views
             var x = await webView.InvokeScriptAsync("eval", new[] { "document.body.style.overflow = 'hidden';" });
         }
 
+        // has been discarded. reserve for commemorate
         private void CommentView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
         {
             CommentView.NavigationStarting -= CommentView_NavigationStarting;

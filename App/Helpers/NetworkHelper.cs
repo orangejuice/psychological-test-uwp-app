@@ -1,4 +1,6 @@
-﻿using System;
+﻿using App.Services;
+using CommonServiceLocator;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +23,7 @@ namespace App.Helpers
                 return _current;
             }
         }
-
+        
         public string NetworkTitle
         {
             get
@@ -44,7 +46,7 @@ namespace App.Helpers
                 }
                 else
                 {
-                    return "无网络访问";
+                    return "No Network";
                 }
             }
         }
@@ -70,10 +72,8 @@ namespace App.Helpers
         private void NetworkInformation_NetworkStatusChanged(object sender)
         {
             _network = GetConnectionGeneration();
-            if (NetworkStatusChanged != null)
-            {
-                NetworkStatusChanged(this);
-            }
+
+            NetworkStatusChanged?.Invoke(this);
         }
 
         /// <summary>

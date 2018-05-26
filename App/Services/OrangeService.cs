@@ -37,6 +37,7 @@ namespace App.Services
         /// </summary>
         public static OrangeService Current => _instance ?? (_instance = new OrangeService());
 
+
         /// <summary>
         /// Disconnects account
         /// </summary>
@@ -287,6 +288,13 @@ namespace App.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    if(response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        LogoutService();
+                        NavigationService.ClearBackStack();
+                        NavigationService.Navigate(typeof(ViewModels.LoginViewModel).FullName);
+                        ViewModelConnHelper.BroadCast("logout");
+                    }
                     result.Success = false;
                     result.Message = response.ReasonPhrase + ": " + response.Content?.ReadAsStringAsync().Result;
                     result.StatusCode = (int)response.StatusCode;

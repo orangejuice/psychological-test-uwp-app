@@ -20,8 +20,8 @@ class PostViewSet(viewsets.GenericViewSet):
 
     def list(self, request):
         order = request.query_params.get('isTop')
-        queryset = Article.objects.all() if order is None \
-            else Article.objects.filter(is_top=1)
+        queryset = Article.objects.filter(is_public=1) if order is None \
+            else Article.objects.filter(is_top=1, is_public=1)
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -32,7 +32,7 @@ class PostViewSet(viewsets.GenericViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
-        queryset = Article.objects.get(pk=pk)
+        queryset = Article.objects.get(pk=pk, is_public=1)
         serializer = PostDetailSerializer(queryset, context={'request': request})
         return Response(serializer.data)
 

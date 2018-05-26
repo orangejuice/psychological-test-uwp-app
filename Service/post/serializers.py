@@ -31,21 +31,20 @@ class PostDetailSerializer(serializers.HyperlinkedModelSerializer):
     favor = serializers.SerializerMethodField()
     cate_name = serializers.ReadOnlyField(source='cate.name')
     # comments = serializers.SerializerMethodField()
-    location = serializers.SerializerMethodField()
+    # location = serializers.SerializerMethodField()
 
     class Meta:
         model = Article
         fields = ('url', 'id', 'title', 'cate', 'cate_name', 'thumbnail', 'author', 'favor',
-                  'content', 'created', 'updated', 'location')
-
-    @staticmethod
-    def get_location(obj):
-        try:
-            location = get_ip_area(obj.ip_address)
-        except GeoNotFoundException:
-            return '火星'
-        else:
-            return location['country'] + location['region']
+                  'content', 'created', 'updated')
+    #
+    # @staticmethod
+    # def get_location(obj):
+    #     try:
+    #         location = get_ip_area(obj.ip_address)
+    #         return location['country'] + location['region']
+    #     except:
+    #         return '火星'
 
     # def get_comments(self, obj):
     #     content_type = ContentType.objects.get_for_model(obj.__class__)

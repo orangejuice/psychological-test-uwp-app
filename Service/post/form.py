@@ -26,6 +26,7 @@ class AttributeForm(forms.ModelForm):
         return dict(
             title=self.cleaned_data["title"],
             content=self.cleaned_data["content"],
+            thumbnail=self.cleaned_data['thumbnail'],
             cate=self.cleaned_data["cate"],
             is_public=False
         )

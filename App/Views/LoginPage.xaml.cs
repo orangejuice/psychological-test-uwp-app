@@ -54,12 +54,12 @@ namespace App.Views
 
         private void ForgetPassword_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(OrangeService.BaseHost + "accounts/password/reset/");
+            var x = Launcher.LaunchUriAsync(new Uri(OrangeService.BaseHost + "accounts/password/reset/"));
         }
 
         private void SignUp_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start(OrangeService.BaseHost + "accounts/signup/");
+            var x = Launcher.LaunchUriAsync(new Uri(OrangeService.BaseHost + "accounts/signup/"));
         }
     }
 }

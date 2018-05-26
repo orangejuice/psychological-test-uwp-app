@@ -77,5 +77,6 @@
                 <AppBarButton Icon="Emoji2" Label="Nothing here!"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
+        <c:InAppNotification Name="Notify"/>
     </Grid>
 </Page>

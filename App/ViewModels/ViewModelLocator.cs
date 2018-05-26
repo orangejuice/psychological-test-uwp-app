@@ -26,7 +26,10 @@ namespace App.ViewModels
             Register<ScaleViewModel, ScalePage>();
             Register<ScaleItemViewModel, ScaleItemPage>();
             Register<ScaleTestViewModel, ScaleTestPage>();
+            Register<ConnWrongViewModel, ConnWrongPage>();
         }
+
+        public ConnWrongViewModel ConnWrongViewModel => ServiceLocator.Current.GetInstance<ConnWrongViewModel>();
 
         public ScaleTestViewModel ScaleTestViewModel => ServiceLocator.Current.GetInstance<ScaleTestViewModel>();
 
