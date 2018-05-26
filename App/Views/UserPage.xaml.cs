@@ -122,7 +122,7 @@ namespace App.Views
                 if (maxVerticalOffset < 0 || verticalOffset == maxVerticalOffset)
                 {
                     Debug.WriteLine("Scrolled to bottom");
-                    Task t = ViewModel.LoadAsync(false);
+                    Task t = ViewModel.LoadFavoritesAsync(false);
                 }
             }
         }

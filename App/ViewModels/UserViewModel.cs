@@ -17,10 +17,27 @@ namespace App.ViewModels
         public UserViewModel()
         {
             ViewModelConnHelper.OnMessageTransmitted += OnMessageTransmitted;
-            Task x = LoadAsync();
+            Task x = LoadFavoritesAsync();
+            LoadEditor();
         }
 
-        public async Task LoadAsync(bool initialize = true)
+        private void LoadEditor()
+        {
+            WebViewURIsource = new Uri(OrangeService.BaseHost + "api/post/editor/");
+        }
+
+        private Uri _webViewURISource;
+        public Uri WebViewURIsource
+        {
+            get => _webViewURISource;
+            set
+            {
+                Set(ref (_webViewURISource), value);
+            }
+        }
+
+
+        public async Task LoadFavoritesAsync(bool initialize = true)
         {
             Loading = Visibility.Visible;
             if (initialize)
@@ -59,7 +76,7 @@ namespace App.ViewModels
                 RaisePropertyChanged("OrangeService");
             if (message == "favorite_update")
             {
-                AsyncHelper.RunSync(async () => await LoadAsync());
+                AsyncHelper.RunSync(async () => await LoadFavoritesAsync());
                 RaisePropertyChanged("Items");
             }
         }

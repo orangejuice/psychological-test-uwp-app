@@ -18,11 +18,11 @@
         <!--UserCenter,  Profile, avatar, username, -->
         <Pivot x:Uid="UserCenter">
             <PivotItem x:Uid="UserCenter_Contribute">
-                <TextBlock Text="unread emails go here." />
+                <WebView
+                    Name="ContributeView"
+                    Margin="0,20,0,0"
+                    Source="{x:Bind ViewModel.WebViewURIsource, Mode=TwoWay}"/>
             </PivotItem>
-            <!--<PivotItem x:Uid="UserCenter_Personal">
-
-            </PivotItem>-->
             <PivotItem x:Uid="UserCenter_Favorites">
 
                 <Grid>

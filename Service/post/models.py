@@ -24,6 +24,7 @@ class Article(models.Model):
     ip_address = models.GenericIPAddressField(unpack_ipv4=True, blank=True, null=True)
     is_top = models.BooleanField('置顶', default=False)
     allow_comments = models.BooleanField('允许评论', default=True)
+    is_public = models.BooleanField('审核通过', default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

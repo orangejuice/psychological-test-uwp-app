@@ -8,7 +8,6 @@ from django.views.generic import TemplateView, DetailView
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
-from rest_framework.views import APIView
 
 from post.form import AttributeForm
 from post.models import Article, Category, ArticleFavorite
@@ -99,12 +98,18 @@ class PostView(DetailView):
 @login_required
 def post_new(request):
     data = request.POST.copy()
-    data.author = request.user
-    data.ip_address = request.META.get("REMOTE_ADDR", None)
-    form = AttributeForm(request.POST)
+    form = AttributeForm(data)
+    if form.errors:
+        return render(request, 'post/new.html', {
+            "content": form.data.get("content", ""),
+            "form": form
+        })
     if form.is_valid():
-        form.save()
-        return HttpResponseRedirect(request, resolve_url('post_success'))
+        model = form.get_object()
+        model.author = request.user
+        model.ip_address = request.META.get("REMOTE_ADDR", None)
+        model.save()
+        return HttpResponseRedirect(resolve_url('post_success'))
 
 
 def post_success(request):

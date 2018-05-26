@@ -6,13 +6,14 @@
 
 {% block content %}
     <h1>{% trans "Submit sucess" %}</h1>
+    <p>{% trans "Please wait for administrator review." %}</p>
 
 {% endblock %}
 
 {% block extra_body %}
-    <script> $(function () {
+    <script>
         setTimeout(function () {
-            window.location.href = "{% url 'post_new' %}";
-        }, 3000);
-    });  </script>
+            window.location.href = "{% url 'post_comment' %}";
+        }, 3000)
+    </script>
 {% endblock %}
