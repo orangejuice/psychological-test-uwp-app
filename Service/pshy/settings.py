@@ -69,7 +69,7 @@ EMAIL_HOST_USER = 'cherrymeteor@foxmail.com'
 EMAIL_HOST_PASSWORD = 'cwpyzjgvmtpcbfgf'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
-DEFAULT_FROM_EMAIL = '橘子心理<NoReply@orangejuce.cc>'
+DEFAULT_FROM_EMAIL = '橘子心理<cherrymeteor@foxmail.com>'
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True

@@ -44,3 +44,12 @@
     </form>
 
 {% endblock %}
+{% block script %}
+    <script>
+        $('input').each(function () {
+            $(this).prev('label').remove()
+            $(this).addClass("input100")
+            $(this).wrap("<div class=\"wrap-input100 validate-input m-b-16\"></div>")
+        });
+    </script>
+{% endblock %}

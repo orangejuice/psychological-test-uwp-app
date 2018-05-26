@@ -5,18 +5,46 @@
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
-    <h1>{% trans "Sign Up" %}</h1>
+    <div class="login100-form-title p-b-10">
+        {% trans "Sign Up" %}
+    </div>
 
     <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
     </p>
 
-    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    <form class="login100-form validate-form flex-sb flex-w signup" id="signup_form" method="post"
+          action="{% url 'account_signup' %}">
         {% csrf_token %}
         {{ form.as_p }}
+        {#    <div class="wrap-input100 validate-input m-b-16 m-t-10">#}
+        {#            <input name="email" class="input100"  id="id_email" required="" type="email" placeholder="E-mail address">#}
+        {#        </div>#}
+        {#        <div class="wrap-input100 validate-input m-b-16">#}
+        {#            <input name="username" class="input100"  id="id_username" autofocus="autofocus" required="" type="text" maxlength="150"#}
+        {#                   placeholder="Username" minlength="1">#}
+        {#        </div>#}
+        {#        <div class="wrap-input100 validate-input m-b-16">#}
+        {#            <input name="password1" class="input100"  id="id_password1" required="" type="password" placeholder="Password">#}
+        {#        </div>#}
+        {#        <div class="wrap-input100 validate-input m-b-16">#}
+        {#            <input name="password2" class="input100"  id="id_password2" required="" type="password" placeholder="Password (again)">#}
+        {#        </div>#}
+
         {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
         {% endif %}
-        <button type="submit">{% trans "Sign Up" %} &raquo;</button>
+        <div class="container-login100-form-btn m-t-17">
+            <button class="login100-form-btn" type="submit">{% trans "Sign Up" %} &raquo;</button>
+        </div>
     </form>
+{% endblock %}
 
+{% block script %}
+    <script>
+        $('input').each(function () {
+            $(this).prev('label').remove()
+            $(this).addClass("input100")
+            $(this).wrap("<div class=\"wrap-input100 validate-input m-b-16\"></div>")
+        });
+    </script>
 {% endblock %}

@@ -38,6 +38,7 @@ urlpatterns = [
 
     url(r'^mdeditor/', include('mdeditor.urls')),
     url(r'^comments/', include('django_comments_xtd.urls')),
+    url(r'^accounts/profile/', TemplateView.as_view(template_name='account/done.html'), name='login_success'),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
