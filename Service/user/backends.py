@@ -15,7 +15,7 @@ class TokenAuthenticationBackend(ModelBackend):
         model = self.get_model()
         try:
             token = model.objects.select_related('user').get(key=credentials['token'])
-        except model.DoesNotExist:
+        except:
             return None
 
         if not token.user.is_active:

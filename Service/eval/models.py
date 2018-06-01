@@ -7,7 +7,7 @@ from user.models import UserProfile
 class Scale(models.Model):
     title = models.CharField(max_length=100, blank=False)
     introduction = models.TextField(null=True, blank=True)
-    thumbnail = models.ImageField(null=True, blank=True, default=None, upload_to='static/images/thumb')
+    thumbnail = models.ImageField(null=True, blank=True, default=None, upload_to='thumb')
     is_top = models.BooleanField('置顶', default=False)
     created = models.DateTimeField(auto_now_add=True)
 
