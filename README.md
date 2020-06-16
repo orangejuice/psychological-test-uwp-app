@@ -1,4 +1,4 @@
-## Psychological test
+## Psychological Test
 
 An app designed with caring about psychological health, to let professionals share their articles and ideas, and enable users to discuss their concerns and thinkings. Plus, do some psychological tests to help analyse inner characteristics.
 
