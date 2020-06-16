@@ -11,4 +11,4 @@ An app designed with caring about psychological health, to let professionals sha
 ## Screenshot
 
 ![Screenshot](App/Assets/image10.png)
-<center>Homepage</center>
+<p align="center">Homepage</p>
